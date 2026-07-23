@@ -400,6 +400,8 @@
 				DEVELOPMENT_TEAM = TKMHMF4NVR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "会议助手需要使用麦克风来实时转写会议语音";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "会议助手需要使用语音识别将会议内容转为文字";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -432,6 +434,8 @@
 				DEVELOPMENT_TEAM = TKMHMF4NVR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "会议助手需要使用麦克风来实时转写会议语音";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "会议助手需要使用语音识别将会议内容转为文字";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
