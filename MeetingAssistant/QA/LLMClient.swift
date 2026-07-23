@@ -96,11 +96,13 @@ enum LLMClient {
         }
     }
 
-    /// 设置页「测试连接」：非流式小请求。
-    static func testConnection(config: LLMConfiguration) async throws -> String {
-        let request = try makeRequest(
-            messages: [Message(role: "user", content: "请只回复：连接成功")],
-            config: config, stream: false, temperature: 0, maxTokens: 16)
+    /// 非流式调用，直接返回完整回复文本。
+    static func chat(messages: [Message],
+                     config: LLMConfiguration,
+                     temperature: Double = 0.3,
+                     maxTokens: Int = 600) async throws -> String {
+        let request = try makeRequest(messages: messages, config: config,
+                                      stream: false, temperature: temperature, maxTokens: maxTokens)
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw LLMError.invalidResponse }
         guard http.statusCode == 200 else {
@@ -113,6 +115,12 @@ enum LLMClient {
             throw LLMError.invalidResponse
         }
         return content
+    }
+
+    /// 设置页「测试连接」：非流式小请求。
+    static func testConnection(config: LLMConfiguration) async throws -> String {
+        try await chat(messages: [Message(role: "user", content: "请只回复：连接成功")],
+                       config: config, temperature: 0, maxTokens: 16)
     }
 
     // MARK: - 内部

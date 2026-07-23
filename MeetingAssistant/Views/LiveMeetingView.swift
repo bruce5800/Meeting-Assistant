@@ -157,6 +157,15 @@ struct LiveMeetingView: View {
                 Label("检测到的问题", systemImage: "questionmark.bubble")
                     .font(.subheadline.bold())
                 Spacer()
+                Button {
+                    viewModel.manualAsk()
+                } label: {
+                    Label("手动提问", systemImage: "plus.bubble")
+                        .font(.caption)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .disabled(viewModel.phase != .recording)
                 if !viewModel.cards.isEmpty {
                     Text("\(viewModel.cards.count)")
                         .font(.caption)

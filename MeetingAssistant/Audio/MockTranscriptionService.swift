@@ -20,6 +20,7 @@ final class MockTranscriptionService: TranscriptionProvider {
         "什么是向量数据库？它和普通数据库有什么区别",
         "嗯那个，我们这个项目 Q3 的内部预算大概是多少来着",
         "HTTP 和 WebSocket 的区别是什么",
+        "对了，这个方案的压测数据你那边测过的没",
         "好，那今天就先到这里",
     ]
 

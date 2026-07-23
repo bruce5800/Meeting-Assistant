@@ -62,6 +62,12 @@ final class MeetingViewModel {
     private var modelContext: ModelContext?
     private var eventLoopTask: Task<Void, Never>?
 
+    // 漏检兜底扫描状态
+    private var sweptOffset = 0
+    private var sweepInProgress = false
+    private var lastSweepAt = Date.now
+    private var sweepLoopTask: Task<Void, Never>?
+
     var startedAt: Date { session?.startedAt ?? .now }
 
     var failureMessage: String? {
@@ -119,6 +125,15 @@ final class MeetingViewModel {
                 }
             }
         }
+
+        // 周期性漏检扫描：字数或时间达到阈值就扫一次
+        sweepLoopTask = Task { [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .seconds(8))
+                guard let self, self.phase == .recording else { break }
+                self.maybeSweep()
+            }
+        }
     }
 
     func stop() async {
@@ -126,6 +141,9 @@ final class MeetingViewModel {
         phase = .stopping
         await provider?.stop()
         eventLoopTask?.cancel()
+        sweepLoopTask?.cancel()
+        // 收尾扫描：确保结束前的尾段问题也被记录
+        await performSweep()
 
         // 未完成的卡片也要留下问题记录
         for card in cards where card.record == nil {
@@ -170,6 +188,57 @@ final class MeetingViewModel {
         Task { await runQA(for: card) }
     }
 
+    // MARK: - 漏检兜底扫描
+
+    /// 阈值触发：未扫描内容 ≥100 字，或距上次扫描 ≥20 秒且有新内容。
+    private func maybeSweep() {
+        guard phase == .recording, !sweepInProgress else { return }
+        let joined = lines.map(\.text).joined(separator: "\n")
+        let unswept = joined.count - sweptOffset
+        guard unswept > 0 else { return }
+        guard unswept >= 100 || Date.now.timeIntervalSince(lastSweepAt) >= 20 else { return }
+        Task { await performSweep() }
+    }
+
+    private func performSweep() async {
+        guard !sweepInProgress else { return }
+        let joined = lines.map(\.text).joined(separator: "\n")
+        guard joined.count > sweptOffset else { return }
+        let config = LLMSettings.current()
+        guard config.isConfigured else { return }
+
+        sweepInProgress = true
+        defer { sweepInProgress = false }
+
+        // 带 60 字重叠，覆盖跨段落的问题
+        let chunkStart = max(0, sweptOffset - 60)
+        let chunk = String(joined.suffix(joined.count - chunkStart))
+        let captured = cards.map(\.displayQuestion)
+        do {
+            let missed = try await QuestionSweeper.findMissedQuestions(
+                transcript: chunk, captured: captured, config: config)
+            lastSweepAt = .now
+            sweptOffset = joined.count
+            for question in missed where deduper.register(question) {
+                let card = QuestionCardModel(rawText: question)
+                cards.insert(card, at: 0)
+                Task { await runQA(for: card) }
+            }
+        } catch {
+            // 扫描失败不打断主流程，等下次触发时重试
+        }
+    }
+
+    /// 手动提问：把最近的转写尾段直接交给 QA 管线提取并回答。
+    func manualAsk() {
+        let joined = lines.map(\.text).joined(separator: "\n")
+        let tail = String(joined.suffix(240)).trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !tail.isEmpty else { return }
+        let card = QuestionCardModel(rawText: tail)
+        cards.insert(card, at: 0)
+        Task { await runQA(for: card) }
+    }
+
     // MARK: - 问答
 
     func retry(card: QuestionCardModel) {
@@ -198,6 +267,17 @@ final class MeetingViewModel {
                 case .questionEnded:
                     if card.cleanedQuestion.isEmpty {
                         card.cleanedQuestion = FillerCleaner.clean(card.rawText)
+                    }
+                    // 清洗后二次去重：规则/兜底扫描/手动等不同来源产生的同一问题在此合并
+                    let normalized = QuestionDeduper.normalize(card.cleanedQuestion)
+                    let isDuplicate = cards.contains { other in
+                        other.id != card.id && !other.cleanedQuestion.isEmpty
+                            && QuestionDeduper.bigramJaccard(
+                                QuestionDeduper.normalize(other.cleanedQuestion), normalized) > 0.8
+                    }
+                    if isDuplicate {
+                        cards.removeAll { $0.id == card.id }
+                        return
                     }
                     card.state = .answering
                 case .answerDelta(let s):

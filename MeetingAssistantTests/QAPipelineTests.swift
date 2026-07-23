@@ -31,11 +31,27 @@ struct QuestionDetectorTests {
         #expect(!QuestionDetector.isQuestion("嗯"))
     }
 
+    @Test func detectsAlternativeAndMetaQuestions() {
+        // 真机实测曾漏检的选择疑问句（含 ASR 误差原文）
+        #expect(QuestionDetector.isQuestion("嗯另外还有一个问题微服务之间的通信用 GRPC 还是用 rest想一想今天恐步到这里。"))
+        #expect(QuestionDetector.isQuestion("微服务之间的通信用 gRPC 还是 REST"))
+        #expect(QuestionDetector.isQuestion("我想问一下这个库的性能情况"))
+        #expect(QuestionDetector.isQuestion("请问这个接口支持分页"))
+    }
+
     @Test func joinsSplitQuestion() {
         // 问题被断句切开：单独不命中，拼接后命中
         let result = QuestionDetector.detectCandidate(current: "大概要花多少钱",
                                                       previous: "如果我们把服务迁到新机房")
         #expect(result != nil)
+    }
+
+    @Test func doesNotJoinWhenPreviousAlreadyQuestion() {
+        // 上一段本身已是问题（已单独成卡）时不拼接，避免重复卡片（模拟器实测 bug）
+        let result = QuestionDetector.detectCandidate(
+            current: "对了，这个方案的压测数据你那边测过的没",
+            previous: "HTTP 和 WebSocket 的区别是什么")
+        #expect(result == nil)
     }
 
     @Test func dedupesSimilarQuestions() {
@@ -46,6 +62,23 @@ struct QuestionDetectorTests {
         #expect(first)
         #expect(!duplicate)
         #expect(different)
+    }
+}
+
+@MainActor
+struct QuestionSweeperTests {
+    @Test func parsesPlainJSONArray() {
+        #expect(QuestionSweeper.parse(#"["问题A的原文"]"#) == ["问题A的原文"])
+        #expect(QuestionSweeper.parse("[]").isEmpty)
+    }
+
+    @Test func parsesMarkdownWrappedJSON() {
+        let reply = "```json\n[\"用 gRPC 还是 REST\", \"压测数据测过的没\"]\n```"
+        #expect(QuestionSweeper.parse(reply).count == 2)
+    }
+
+    @Test func toleratesGarbage() {
+        #expect(QuestionSweeper.parse("抱歉，我无法解析").isEmpty)
     }
 }
 

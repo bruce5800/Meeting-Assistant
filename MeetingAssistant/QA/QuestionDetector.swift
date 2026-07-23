@@ -11,9 +11,11 @@ import Foundation
 enum QuestionDetector {
     private static let zhPhrases = [
         "为什么", "什么", "怎么", "怎样", "如何", "多少", "几个", "几点", "几号",
-        "哪个", "哪些", "哪里", "哪儿", "谁", "啥", "咋",
+        "哪个", "哪些", "哪里", "哪儿", "谁", "啥", "咋", "多久", "多大", "多长",
         "是不是", "能不能", "可不可以", "行不行", "好不好", "有没有", "对不对",
         "是否", "可以吗", "行吗", "好吗", "对吧",
+        // 选择疑问句与提问引导语（真机实测漏检补充）
+        "还是", "想问", "请问", "问一下", "有个问题", "一个问题", "有问题想",
     ]
     private static let zhSuffixes = ["吗", "呢", "么"]
     private static let enLeadingWords: Set<String> = [
@@ -29,8 +31,10 @@ enum QuestionDetector {
         let cur = current.trimmingCharacters(in: .whitespacesAndNewlines)
         guard cur.count >= 3 else { return nil }
         if isQuestion(cur) { return cur }
+        // 仅当上一段自身不是问题时才拼接——否则拼接文本会靠上一段（已单独成卡）
+        // 的疑问词误触发，产生重复卡片
         if let prev = previous?.trimmingCharacters(in: .whitespacesAndNewlines),
-           !prev.isEmpty, cur.count + prev.count <= 200 {
+           !prev.isEmpty, !isQuestion(prev), cur.count + prev.count <= 200 {
             let joined = prev + cur
             if isQuestion(joined) { return joined }
         }
