@@ -92,7 +92,8 @@ final class LocalTranscriptionService: TranscriptionProvider {
     // MARK: - 语言与模型
 
     /// 中英混合场景：优先中文模型（对夹杂英文术语有一定容错），其次系统语言，再次英文。
-    private static func pickLocale() async throws -> Locale {
+    /// FileTranscriptionService 复用，故为 internal。
+    static func pickLocale() async throws -> Locale {
         let supported = await SpeechTranscriber.supportedLocales
         let supportedIDs = Set(supported.map { $0.identifier(.bcp47) })
         let preferred = [Locale(identifier: "zh_CN"), Locale.current, Locale(identifier: "en_US")]
@@ -103,7 +104,7 @@ final class LocalTranscriptionService: TranscriptionProvider {
         throw TranscriptionError.localeNotSupported
     }
 
-    private static func ensureModel(for transcriber: SpeechTranscriber, locale: Locale) async throws {
+    static func ensureModel(for transcriber: SpeechTranscriber, locale: Locale) async throws {
         let installed = await SpeechTranscriber.installedLocales
         if installed.contains(where: { $0.identifier(.bcp47) == locale.identifier(.bcp47) }) { return }
         do {

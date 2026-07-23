@@ -80,10 +80,16 @@ final class MeetingViewModel {
         context.insert(session)
         self.session = session
 
-        // 模拟器没有可用的麦克风音频栈和本地识别模型，用脚本化演示流代替
+        // 模拟器的麦克风音频栈不可用：默认用脚本化演示流；
+        // 带 -transcribeFile 启动参数时改为喂入音频文件做真实本地识别（ASR 测试）。
         #if targetEnvironment(simulator)
-        let provider: any TranscriptionProvider = MockTranscriptionService()
-        isDemoMode = true
+        let provider: any TranscriptionProvider
+        if let filePath = UserDefaults.standard.string(forKey: "transcribeFile") {
+            provider = FileTranscriptionService(fileURL: URL(fileURLWithPath: filePath))
+        } else {
+            provider = MockTranscriptionService()
+            isDemoMode = true
+        }
         #else
         let provider: any TranscriptionProvider = LocalTranscriptionService()
         #endif
