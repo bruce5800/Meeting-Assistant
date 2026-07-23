@@ -13,6 +13,7 @@ struct LiveMeetingView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel = MeetingViewModel()
+    @AppStorage(DetectionSettings.sweepEnabledKey) private var sweepEnabled = true
 
     var body: some View {
         VStack(spacing: 0) {
@@ -157,6 +158,15 @@ struct LiveMeetingView: View {
                 Label("检测到的问题", systemImage: "questionmark.bubble")
                     .font(.subheadline.bold())
                 Spacer()
+                Button {
+                    sweepEnabled.toggle()
+                } label: {
+                    Label("兜底扫描", systemImage: sweepEnabled ? "checkmark.circle.fill" : "circle")
+                        .font(.caption)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .tint(sweepEnabled ? .green : .secondary)
                 Button {
                     viewModel.manualAsk()
                 } label: {

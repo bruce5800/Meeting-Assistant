@@ -15,6 +15,7 @@ struct SettingsView: View {
     @State private var apiKey = ""
     @State private var testing = false
     @State private var testResult: TestResult?
+    @AppStorage(DetectionSettings.sweepEnabledKey) private var sweepEnabled = true
 
     private enum TestResult {
         case success(String)
@@ -37,6 +38,14 @@ struct SettingsView: View {
                     Text("LLM 服务（OpenAI 兼容格式）")
                 } footer: {
                     Text("兼容 DeepSeek、通义、OpenAI 等 OpenAI 格式服务。示例：https://api.deepseek.com/v1 + deepseek-chat。API Key 仅保存在设备 Keychain 中。")
+                }
+
+                Section {
+                    Toggle("LLM 漏检兜底扫描", isOn: $sweepEnabled)
+                } header: {
+                    Text("问题检测")
+                } footer: {
+                    Text("开启后每累计约 100 字或 20 秒，用一次小额 LLM 调用扫描规则检测漏掉的问题（选择疑问句、无疑问词的提问等），并在结束会议前做收尾扫描。会议中也可在问题区快速开关。")
                 }
 
                 Section {

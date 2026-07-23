@@ -36,6 +36,15 @@ enum LLMSettings {
     }
 }
 
+/// 问题检测行为配置
+enum DetectionSettings {
+    static let sweepEnabledKey = "detection.sweepEnabled"
+    /// LLM 漏检兜底扫描开关（默认开启）
+    static var sweepEnabled: Bool {
+        UserDefaults.standard.object(forKey: sweepEnabledKey) as? Bool ?? true
+    }
+}
+
 enum LLMError: LocalizedError {
     case invalidURL
     case invalidResponse

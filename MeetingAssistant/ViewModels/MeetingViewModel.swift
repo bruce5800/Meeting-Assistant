@@ -192,6 +192,7 @@ final class MeetingViewModel {
 
     /// 阈值触发：未扫描内容 ≥100 字，或距上次扫描 ≥20 秒且有新内容。
     private func maybeSweep() {
+        guard DetectionSettings.sweepEnabled else { return }
         guard phase == .recording, !sweepInProgress else { return }
         let joined = lines.map(\.text).joined(separator: "\n")
         let unswept = joined.count - sweptOffset
@@ -201,6 +202,7 @@ final class MeetingViewModel {
     }
 
     private func performSweep() async {
+        guard DetectionSettings.sweepEnabled else { return }
         guard !sweepInProgress else { return }
         let joined = lines.map(\.text).joined(separator: "\n")
         guard joined.count > sweptOffset else { return }
