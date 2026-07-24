@@ -37,9 +37,10 @@ final class MeetingSession {
     }
 }
 
-/// 答案来源：直答 / 待知识库（P1 开放 RAG 后回填）/ 失败 / 未配置 LLM
+/// 答案来源：直答 / 知识库回答 / 知识库未命中 / 失败 / 未配置 LLM
 enum AnswerSource: String {
     case direct
+    case kb
     case needsKB
     case failed
     case unconfigured
@@ -55,6 +56,8 @@ final class QuestionRecord {
     var cleanedText: String
     var answer: String
     var sourceRaw: String
+    /// 知识库回答时的来源文档名（「、」分隔）
+    var kbSources: String = ""
     var session: MeetingSession?
 
     init(rawText: String, cleanedText: String = "", answer: String = "", source: AnswerSource, createdAt: Date = .now) {
@@ -64,10 +67,55 @@ final class QuestionRecord {
         self.cleanedText = cleanedText
         self.answer = answer
         self.sourceRaw = source.rawValue
+        self.kbSources = ""
     }
 
     var source: AnswerSource {
         get { AnswerSource(rawValue: sourceRaw) ?? .failed }
         set { sourceRaw = newValue.rawValue }
+    }
+}
+
+// MARK: - 知识库
+
+@Model
+final class KnowledgeDocument {
+    var id: UUID
+    var name: String
+    var fileType: String
+    var addedAt: Date
+    var chunkCount: Int
+    /// importing / ready / failed
+    var status: String
+    var errorMessage: String
+    @Relationship(deleteRule: .cascade, inverse: \KnowledgeChunk.document)
+    var chunks: [KnowledgeChunk]
+
+    init(name: String, fileType: String) {
+        self.id = UUID()
+        self.name = name
+        self.fileType = fileType
+        self.addedAt = .now
+        self.chunkCount = 0
+        self.status = "importing"
+        self.errorMessage = ""
+        self.chunks = []
+    }
+}
+
+@Model
+final class KnowledgeChunk {
+    var id: UUID
+    var order: Int
+    var text: String
+    /// L2 归一化后的 [Float] 向量；向量模型不可用时为 nil（检索降级为文本匹配）
+    var embedding: Data?
+    var document: KnowledgeDocument?
+
+    init(text: String, order: Int, embedding: Data? = nil) {
+        self.id = UUID()
+        self.text = text
+        self.order = order
+        self.embedding = embedding
     }
 }

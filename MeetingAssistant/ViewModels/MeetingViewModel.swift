@@ -20,8 +20,9 @@ final class QuestionCardModel: Identifiable {
     enum CardState: Equatable {
         case detecting            // 已触发，等待 LLM 确认/清洗
         case answering            // 答案流式输出中
-        case done                 // 直答完成
-        case needsKnowledgeBase   // LLM 判定需要知识库（P1）
+        case searchingKB          // LLM 判定需知识库，检索中
+        case done                 // 回答完成（直答或知识库）
+        case needsKnowledgeBase   // 知识库为空或未命中相关资料
         case failed(String)       // 调用失败，可重试
         case unconfigured         // 未配置 LLM，仅记录问题
     }
@@ -32,6 +33,8 @@ final class QuestionCardModel: Identifiable {
     var cleanedQuestion = ""
     var answer = ""
     var state: CardState = .detecting
+    var answeredFromKB = false
+    var kbSources: [String] = []
     var record: QuestionRecord?
 
     init(rawText: String) {
@@ -332,7 +335,7 @@ final class MeetingViewModel {
                     if card.state == .detecting { card.state = .answering }
                     card.answer += s
                 case .needsKnowledgeBase:
-                    card.state = .needsKnowledgeBase
+                    card.state = .searchingKB
                 case .skipped:
                     cards.removeAll { $0.id == card.id }
                     return
@@ -344,8 +347,8 @@ final class MeetingViewModel {
             case .answering:
                 card.state = .done
                 persist(card: card, source: .direct)
-            case .needsKnowledgeBase:
-                persist(card: card, source: .needsKB)
+            case .searchingKB:
+                await answerFromKnowledgeBase(card: card, config: config)
             case .detecting:
                 // 流结束但无有效输出：按非问题处理
                 cards.removeAll { $0.id == card.id }
@@ -356,6 +359,40 @@ final class MeetingViewModel {
             if card.cleanedQuestion.isEmpty {
                 card.cleanedQuestion = FillerCleaner.clean(card.rawText)
             }
+            card.state = .failed(error.localizedDescription)
+            persist(card: card, source: .failed)
+        }
+    }
+
+    /// 知识库兜底回答：本地检索 Top-K 片段后携带上下文二次调用 LLM。
+    private func answerFromKnowledgeBase(card: QuestionCardModel, config: LLMConfiguration) async {
+        guard let modelContext else {
+            card.state = .needsKnowledgeBase
+            persist(card: card, source: .needsKB)
+            return
+        }
+        let hits = await KnowledgeRetriever.retrieve(query: card.displayQuestion, context: modelContext)
+        guard !hits.isEmpty else {
+            card.state = .needsKnowledgeBase
+            persist(card: card, source: .needsKB)
+            return
+        }
+
+        var sourceNames: [String] = []
+        for hit in hits where !sourceNames.contains(hit.docName) {
+            sourceNames.append(hit.docName)
+        }
+        card.kbSources = sourceNames
+        card.state = .answering
+        do {
+            for try await delta in QAService.kbAnswerStream(question: card.displayQuestion,
+                                                            hits: hits, config: config) {
+                card.answer += delta
+            }
+            card.answeredFromKB = true
+            card.state = .done
+            persist(card: card, source: .kb)
+        } catch {
             card.state = .failed(error.localizedDescription)
             persist(card: card, source: .failed)
         }
@@ -375,12 +412,14 @@ final class MeetingViewModel {
             record.cleanedText = card.displayQuestion
             record.answer = card.answer
             record.source = source
+            record.kbSources = card.kbSources.joined(separator: "、")
         } else {
             let record = QuestionRecord(rawText: card.rawText,
                                         cleanedText: card.displayQuestion,
                                         answer: card.answer,
                                         source: source,
                                         createdAt: card.createdAt)
+            record.kbSources = card.kbSources.joined(separator: "、")
             record.session = session
             modelContext.insert(record)
             card.record = record

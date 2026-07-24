@@ -66,6 +66,11 @@ private struct RecordRow: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
+            if !record.kbSources.isEmpty {
+                Label("来源：\(record.kbSources)", systemImage: "books.vertical")
+                    .font(.caption)
+                    .foregroundStyle(.indigo)
+            }
             Text(record.createdAt.formatted(date: .omitted, time: .standard))
                 .font(.caption2)
                 .foregroundStyle(.tertiary)
@@ -76,7 +81,8 @@ private struct RecordRow: View {
     private var sourceBadge: some View {
         let (text, color): (String, Color) = switch record.source {
         case .direct: ("AI 直答", .green)
-        case .needsKB: ("待知识库", .orange)
+        case .kb: ("知识库", .indigo)
+        case .needsKB: ("未找到资料", .orange)
         case .failed: ("回答失败", .red)
         case .unconfigured: ("未配置", .gray)
         }

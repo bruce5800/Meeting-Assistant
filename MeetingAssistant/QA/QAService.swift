@@ -44,7 +44,42 @@ enum QAPrompts {
     }
 }
 
+enum KBPrompts {
+    static let system = """
+    你是会议助手的知识库问答引擎。根据提供的内部资料片段回答问题。
+    - 只依据资料内容回答，不要编造；资料不足以回答时，直接说明「知识库资料不足以回答该问题」并简述缺少什么信息。
+    - 回答简洁直接，适合会议中快速参考，一般不超过 150 字，必要时用短分点。
+    - 不要在回答中罗列来源文件名（App 会单独展示来源）。
+    - 直接输出答案文本，不要任何标签或前缀。
+    """
+
+    static func userMessage(question: String, hits: [KnowledgeRetriever.Hit]) -> String {
+        let references = hits.enumerated()
+            .map { "【片段 \($0.offset + 1)｜来源：\($0.element.docName)】\n\($0.element.text)" }
+            .joined(separator: "\n\n")
+        return """
+        【内部资料】
+        \(references)
+
+        【问题】
+        \(question)
+        """
+    }
+}
+
 enum QAService {
+    /// 知识库二次回答：携带检索片段的纯流式调用（无标签协议）。
+    static func kbAnswerStream(question: String,
+                               hits: [KnowledgeRetriever.Hit],
+                               config: LLMConfiguration) -> AsyncThrowingStream<String, Error> {
+        LLMClient.streamChat(
+            messages: [
+                LLMClient.Message(role: "system", content: KBPrompts.system),
+                LLMClient.Message(role: "user", content: KBPrompts.userMessage(question: question, hits: hits)),
+            ],
+            config: config)
+    }
+
     static func run(candidate: String,
                     context: String,
                     config: LLMConfiguration) -> AsyncThrowingStream<QAEvent, Error> {

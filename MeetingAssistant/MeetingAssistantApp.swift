@@ -14,6 +14,6 @@ struct MeetingAssistantApp: App {
         WindowGroup {
             HomeView()
         }
-        .modelContainer(for: MeetingSession.self)
+        .modelContainer(for: [MeetingSession.self, KnowledgeDocument.self])
     }
 }

@@ -37,8 +37,21 @@ struct QuestionCardView: View {
                     Text(card.answer)
                         .font(.subheadline)
                 }
+                if card.answeredFromKB, !card.kbSources.isEmpty {
+                    Label("来源：\(card.kbSources.joined(separator: "、"))", systemImage: "books.vertical")
+                        .font(.caption)
+                        .foregroundStyle(.indigo)
+                }
+            case .searchingKB:
+                HStack(spacing: 6) {
+                    ProgressView()
+                        .controlSize(.small)
+                    Text("涉及私有信息，正在检索知识库…")
+                        .font(.caption)
+                        .foregroundStyle(.indigo)
+                }
             case .needsKnowledgeBase:
-                Label("涉及私有信息，需要本地知识库（后续版本支持）", systemImage: "books.vertical")
+                Label("知识库中未找到相关资料，可在首页「知识库」导入文档", systemImage: "books.vertical")
                     .font(.caption)
                     .foregroundStyle(.orange)
             case .failed(let message):
@@ -71,9 +84,13 @@ struct QuestionCardView: View {
             Image(systemName: "ellipsis")
                 .symbolEffect(.variableColor.iterative)
                 .foregroundStyle(.blue)
+        case .searchingKB:
+            Image(systemName: "books.vertical")
+                .symbolEffect(.pulse)
+                .foregroundStyle(.indigo)
         case .done:
-            Image(systemName: "checkmark.circle.fill")
-                .foregroundStyle(.green)
+            Image(systemName: card.answeredFromKB ? "books.vertical.circle.fill" : "checkmark.circle.fill")
+                .foregroundStyle(card.answeredFromKB ? .indigo : .green)
         case .needsKnowledgeBase:
             Image(systemName: "books.vertical.fill")
                 .foregroundStyle(.orange)

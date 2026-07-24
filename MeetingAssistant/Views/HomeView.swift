@@ -13,6 +13,7 @@ struct HomeView: View {
     @Query(sort: \MeetingSession.startedAt, order: .reverse) private var sessions: [MeetingSession]
     @State private var showLiveMeeting = false
     @State private var showSettings = false
+    @State private var showKnowledgeBase = false
 
     var body: some View {
         NavigationStack {
@@ -39,6 +40,14 @@ struct HomeView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
+                        showKnowledgeBase = true
+                    } label: {
+                        Image(systemName: "books.vertical")
+                    }
+                    .accessibilityIdentifier("knowledgeBaseButton")
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
                         showSettings = true
                     } label: {
                         Image(systemName: "gearshape")
@@ -62,6 +71,9 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showSettings) {
                 SettingsView()
+            }
+            .sheet(isPresented: $showKnowledgeBase) {
+                KnowledgeBaseView()
             }
             .fullScreenCover(isPresented: $showLiveMeeting) {
                 LiveMeetingView()

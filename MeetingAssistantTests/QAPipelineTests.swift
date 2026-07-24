@@ -5,6 +5,7 @@
 //  问题检测与流式标签解析的单元测试。
 //
 
+import Foundation
 import Testing
 @testable import MeetingAssistant
 
@@ -79,6 +80,44 @@ struct QuestionSweeperTests {
 
     @Test func toleratesGarbage() {
         #expect(QuestionSweeper.parse("抱歉，我无法解析").isEmpty)
+    }
+}
+
+@MainActor
+struct KnowledgeBaseTests {
+    @Test func chunksParagraphsToTargetSize() {
+        let text = (1...20).map { "第 \($0) 段：这是一段用于测试切块逻辑的正文内容，包含足够的文字。" }
+            .joined(separator: "\n\n")
+        let chunks = KnowledgeImporter.chunk(text, targetSize: 100)
+        #expect(!chunks.isEmpty)
+        #expect(chunks.allSatisfy { $0.count <= 120 })
+        // 内容不丢失（去掉分隔符后总量一致）
+        let original = text.replacingOccurrences(of: "\n", with: "")
+        let joined = chunks.joined().replacingOccurrences(of: "\n", with: "")
+        #expect(joined.count == original.count)
+    }
+
+    @Test func splitsOversizedParagraphBySentence() {
+        let long = String(repeating: "这里是一个句子。", count: 100)
+        let chunks = KnowledgeImporter.chunk(long, targetSize: 300)
+        #expect(chunks.count > 1)
+        #expect(chunks.allSatisfy { $0.count <= 300 })
+    }
+
+    @Test func lexicalScoreRanksRelevantChunkHigher() {
+        let query = "Q3 的内部预算是多少"
+        let relevant = "项目 Alpha 的 Q3 内部预算总额为 120 万元：研发 80 万、市场 25 万。"
+        let irrelevant = "生产环境 API 网关的限流阈值为每秒 5000 次请求。"
+        let a = KnowledgeRetriever.lexicalScore(query: query, chunk: relevant)
+        let b = KnowledgeRetriever.lexicalScore(query: query, chunk: irrelevant)
+        #expect(a > b)
+        #expect(a > 0.2)
+    }
+
+    @Test func floatVectorDataRoundTrip() {
+        let vector: [Float] = [0.1, -0.5, 0.88, 42]
+        #expect(vector.vectorData.toFloatVector() == vector)
+        #expect(Data().toFloatVector() == nil)
     }
 }
 
