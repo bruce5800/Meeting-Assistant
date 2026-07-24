@@ -68,6 +68,11 @@ final class MeetingViewModel {
     private var lastSweepAt = Date.now
     private var sweepLoopTask: Task<Void, Never>?
 
+    // volatile 提前检测状态（连续说话时不等定稿即触发）
+    private var volatileConsumedCount = 0
+    private var pendingVolatileHit: (length: Int, firstSeen: Date)?
+    private var volatileFiredInSegment = false
+
     var startedAt: Date { session?.startedAt ?? .now }
 
     var failureMessage: String? {
@@ -115,6 +120,7 @@ final class MeetingViewModel {
                     switch event {
                     case .volatile(let text):
                         self.volatileText = text
+                        self.handleVolatile(text)
                     case .finalized(let text):
                         self.handleFinalized(text)
                     }
@@ -171,14 +177,54 @@ final class MeetingViewModel {
 
     // MARK: - 转写与问题检测
 
+    /// volatile 提前检测：规则命中后等文本再增长 20 字（说话人已越过问题）
+    /// 或稳定 2 秒才触发，避免截断未说完的问题。
+    private func handleVolatile(_ text: String) {
+        guard DetectionSettings.earlyDetectEnabled, phase == .recording else { return }
+        let count = text.count
+        if count < volatileConsumedCount {
+            // 识别引擎回退重写了未定稿文本，重置游标
+            volatileConsumedCount = 0
+            pendingVolatileHit = nil
+        }
+        let tail = String(text.suffix(count - volatileConsumedCount))
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        guard tail.count >= 3, QuestionDetector.isQuestion(tail) else {
+            pendingVolatileHit = nil
+            return
+        }
+        guard let pending = pendingVolatileHit else {
+            pendingVolatileHit = (count, .now)
+            return
+        }
+        guard count >= pending.length + 20
+            || Date.now.timeIntervalSince(pending.firstSeen) >= 2.0 else { return }
+
+        pendingVolatileHit = nil
+        volatileConsumedCount = count
+        volatileFiredInSegment = true
+        guard deduper.register(tail) else { return }
+        let card = QuestionCardModel(rawText: String(tail.suffix(200)))
+        cards.insert(card, at: 0)
+        Task { await runQA(for: card) }
+    }
+
     private func handleFinalized(_ text: String) {
         volatileText = ""
+        let segmentHadEarlyFire = volatileFiredInSegment
+        volatileConsumedCount = 0
+        pendingVolatileHit = nil
+        volatileFiredInSegment = false
+
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
 
         let previous = lines.last?.text
         lines.append(TranscriptLine(text: trimmed, date: .now))
         session?.transcript = lines.map(\.text).joined(separator: "\n")
+
+        // 该段已由提前检测出卡：跳过定稿检测（段内其余问题由兜底扫描负责）
+        guard !segmentHadEarlyFire else { return }
 
         guard let candidate = QuestionDetector.detectCandidate(current: trimmed, previous: previous),
               deduper.register(candidate) else { return }

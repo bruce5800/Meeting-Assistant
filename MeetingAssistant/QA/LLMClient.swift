@@ -43,6 +43,13 @@ enum DetectionSettings {
     static var sweepEnabled: Bool {
         UserDefaults.standard.object(forKey: sweepEnabledKey) as? Bool ?? true
     }
+
+    static let earlyDetectKey = "detection.earlyDetectEnabled"
+    /// volatile（未定稿）文本提前检测开关（默认开启）。
+    /// 连续说话时 ASR 可能几十秒不定稿，提前检测让问题不必等定稿即出卡。
+    static var earlyDetectEnabled: Bool {
+        UserDefaults.standard.object(forKey: earlyDetectKey) as? Bool ?? true
+    }
 }
 
 enum LLMError: LocalizedError {

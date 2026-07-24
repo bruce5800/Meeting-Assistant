@@ -16,6 +16,7 @@ struct SettingsView: View {
     @State private var testing = false
     @State private var testResult: TestResult?
     @AppStorage(DetectionSettings.sweepEnabledKey) private var sweepEnabled = true
+    @AppStorage(DetectionSettings.earlyDetectKey) private var earlyDetectEnabled = true
 
     private enum TestResult {
         case success(String)
@@ -42,10 +43,11 @@ struct SettingsView: View {
 
                 Section {
                     Toggle("LLM 漏检兜底扫描", isOn: $sweepEnabled)
+                    Toggle("提前检测（不等定稿）", isOn: $earlyDetectEnabled)
                 } header: {
                     Text("问题检测")
                 } footer: {
-                    Text("开启后每累计约 100 字或 20 秒，用一次小额 LLM 调用扫描规则检测漏掉的问题（选择疑问句、无疑问词的提问等），并在结束会议前做收尾扫描。会议中也可在问题区快速开关。")
+                    Text("兜底扫描：每累计约 100 字或 20 秒，用一次小额 LLM 调用扫描规则漏掉的问题，结束会议前做收尾扫描（会议中可快速开关）。提前检测：连续说话时语音识别可能几十秒不定稿，开启后在灰色未定稿文本上即时检测问题，命中并确认说完后立刻出卡。")
                 }
 
                 Section {
