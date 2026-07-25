@@ -18,21 +18,37 @@ struct LLMConfiguration {
     }
 }
 
-/// P0：单 Provider 配置。baseURL/model 存 UserDefaults，API key 存 Keychain。
+/// 多 Provider 配置存 SwiftData（ProviderConfig），当前生效配置以「快照」写入
+/// UserDefaults + Keychain 账户名，问答链路通过 current() 读快照，无需数据库访问。
 enum LLMSettings {
     static let defaultBaseURL = "https://api.deepseek.com/v1"
-    static let defaultModel = "deepseek-chat"
+    // DeepSeek 于 2026-07 下线了 deepseek-chat 别名，现支持 deepseek-v4-pro / deepseek-v4-flash
+    static let defaultModel = "deepseek-v4-flash"
     static let baseURLKey = "llm.baseURL"
     static let modelKey = "llm.model"
+    /// 旧版单配置的 Keychain 账户（迁移与回退用）
     static let apiKeyAccount = "llm.apiKey"
+    /// 当前生效 Provider 的 Keychain 账户名
+    static let activeKeyAccountKey = "llm.activeKeyAccount"
+
+    static func keyAccount(for id: UUID) -> String { "llm.apiKey.\(id.uuidString)" }
 
     static func current() -> LLMConfiguration {
         let defaults = UserDefaults.standard
+        let keyAccount = defaults.string(forKey: activeKeyAccountKey) ?? apiKeyAccount
         return LLMConfiguration(
             baseURL: defaults.string(forKey: baseURLKey) ?? defaultBaseURL,
-            apiKey: KeychainStore.load(account: apiKeyAccount) ?? "",
+            apiKey: KeychainStore.load(account: keyAccount) ?? "",
             model: defaults.string(forKey: modelKey) ?? defaultModel
         )
+    }
+
+    /// 把某 Provider 设为当前生效配置。
+    static func applySnapshot(baseURL: String, model: String, keyAccount: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(baseURL, forKey: baseURLKey)
+        defaults.set(model, forKey: modelKey)
+        defaults.set(keyAccount, forKey: activeKeyAccountKey)
     }
 }
 

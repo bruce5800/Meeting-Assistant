@@ -15,7 +15,7 @@ final class MockTranscriptionService: TranscriptionProvider {
     private var scriptTask: Task<Void, Never>?
 
     private static let script = [
-        "我们开始今天的产品评审会，先同步一下进度",
+        "我们开始今天的项目 Alpha 评审会，先同步一下进度",
         "上周的迭代已经全部上线了，数据看起来不错",
         "什么是向量数据库？它和普通数据库有什么区别",
         "嗯那个，我们这个项目 Q3 的内部预算大概是多少来着",

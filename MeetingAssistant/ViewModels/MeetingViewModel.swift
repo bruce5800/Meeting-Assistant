@@ -386,7 +386,9 @@ final class MeetingViewModel {
         card.state = .answering
         do {
             for try await delta in QAService.kbAnswerStream(question: card.displayQuestion,
-                                                            hits: hits, config: config) {
+                                                            hits: hits,
+                                                            context: recentContext(),
+                                                            config: config) {
                 card.answer += delta
             }
             card.answeredFromKB = true

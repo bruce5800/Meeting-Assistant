@@ -76,6 +76,30 @@ final class QuestionRecord {
     }
 }
 
+// MARK: - LLM Provider
+
+@Model
+final class ProviderConfig {
+    var id: UUID
+    var name: String
+    var baseURL: String
+    var modelName: String
+    var isActive: Bool
+    var createdAt: Date
+
+    init(name: String, baseURL: String, modelName: String, isActive: Bool = false) {
+        self.id = UUID()
+        self.name = name
+        self.baseURL = baseURL
+        self.modelName = modelName
+        self.isActive = isActive
+        self.createdAt = .now
+    }
+
+    /// 该 Provider 的 API key 在 Keychain 中的账户名
+    var keyAccount: String { LLMSettings.keyAccount(for: id) }
+}
+
 // MARK: - 知识库
 
 @Model
