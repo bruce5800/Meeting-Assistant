@@ -122,6 +122,35 @@ struct KnowledgeBaseTests {
 }
 
 @MainActor
+struct MeetingExporterTests {
+    @Test func markdownContainsAllSections() {
+        let records = [
+            MeetingExporter.ExportRecord(question: "预算是多少？", answer: "120 万元",
+                                         sourceLabel: "知识库", kbSources: "资料.md", time: .now),
+            MeetingExporter.ExportRecord(question: "HTTP 和 WebSocket 的区别？", answer: "……",
+                                         sourceLabel: "AI 直答", kbSources: "", time: .now),
+        ]
+        let md = MeetingExporter.markdown(title: "测试会议", startedAt: .now, durationText: "10:00",
+                                          summary: "## 会议概要\n测试。",
+                                          records: records, transcript: "转写内容")
+        #expect(md.hasPrefix("# 测试会议"))
+        #expect(md.contains("## 会议概要"))
+        #expect(md.contains("## 问答记录"))
+        #expect(md.contains("**问：预算是多少？**（知识库）"))
+        #expect(md.contains("> 来源：资料.md"))
+        #expect(md.contains("## 转写全文"))
+    }
+
+    @Test func summaryTranscriptCapping() {
+        let long = String(repeating: "字", count: 20000)
+        let capped = SummaryPrompts.cappedTranscript(long, limit: 12000)
+        #expect(capped.count < 12100)
+        #expect(capped.contains("（中间内容因篇幅省略）"))
+        #expect(SummaryPrompts.cappedTranscript("短文本") == "短文本")
+    }
+}
+
+@MainActor
 struct FishASRClientTests {
     @Test func msgpackBodyMatchesSpec() {
         let audio = Data([0x01, 0x02, 0x03])

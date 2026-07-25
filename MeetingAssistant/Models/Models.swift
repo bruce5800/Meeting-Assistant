@@ -15,6 +15,8 @@ final class MeetingSession {
     var startedAt: Date
     var endedAt: Date?
     var transcript: String
+    /// LLM 生成的会议纪要（Markdown，空表示未生成）
+    var summary: String = ""
     @Relationship(deleteRule: .cascade, inverse: \QuestionRecord.session)
     var questions: [QuestionRecord]
 
@@ -24,6 +26,7 @@ final class MeetingSession {
         self.startedAt = startedAt
         self.endedAt = nil
         self.transcript = ""
+        self.summary = ""
         self.questions = []
     }
 
