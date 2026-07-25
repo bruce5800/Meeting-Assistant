@@ -122,6 +122,55 @@ struct KnowledgeBaseTests {
 }
 
 @MainActor
+struct FishASRClientTests {
+    @Test func msgpackBodyMatchesSpec() {
+        let audio = Data([0x01, 0x02, 0x03])
+        let body = FishASRClient.msgpackBody(audio: audio)
+        var expected = Data([0x82])                          // fixmap(2)
+        expected.append(Data([0xA5]) + Data("audio".utf8))   // fixstr(5)
+        expected.append(Data([0xC6, 0x00, 0x00, 0x00, 0x03]))// bin32 len=3
+        expected.append(audio)
+        expected.append(Data([0xB1]) + Data("ignore_timestamps".utf8))
+        expected.append(Data([0xC3]))                        // true
+        #expect(body == expected)
+    }
+
+    @Test func wavHeaderIsWellFormed() {
+        let samples = Data(repeating: 0, count: 3200)        // 0.1s @16kHz
+        let wav = FishASRClient.wavData(fromPCM16: samples, sampleRate: 16000)
+        #expect(wav.count == 44 + samples.count)
+        #expect(String(data: wav.prefix(4), encoding: .ascii) == "RIFF")
+        #expect(String(data: wav.subdata(in: 8..<12), encoding: .ascii) == "WAVE")
+        #expect(String(data: wav.subdata(in: 36..<40), encoding: .ascii) == "data")
+    }
+
+    @Test func chunkBufferDrainsOnSilenceAndCap() {
+        let buffer = PCMChunkBuffer()
+        let rate = 16000
+        // 2 秒响音：未达 minSeconds，不取块
+        buffer.append(loudPCM(seconds: 2, rate: rate))
+        #expect(buffer.drainIfReady(sampleRate: rate) == nil)
+        // 再加 1.5 秒响音 + 0.6 秒静音：满足「≥3s 且尾部静音」
+        buffer.append(loudPCM(seconds: 1.5, rate: rate))
+        buffer.append(Data(repeating: 0, count: Int(0.6 * Double(rate)) * 2))
+        #expect(buffer.drainIfReady(sampleRate: rate) != nil)
+        // 9 秒持续响音：触发硬上限
+        buffer.append(loudPCM(seconds: 9, rate: rate))
+        #expect(buffer.drainIfReady(sampleRate: rate) != nil)
+        #expect(buffer.drainAll() == nil)
+    }
+
+    private func loudPCM(seconds: Double, rate: Int) -> Data {
+        let count = Int(seconds * Double(rate))
+        var data = Data(capacity: count * 2)
+        for i in 0..<count {
+            data.appendUInt16LE(UInt16(bitPattern: i % 2 == 0 ? 8000 : -8000))
+        }
+        return data
+    }
+}
+
+@MainActor
 struct AnswerStreamParserTests {
     private func collect(_ events: [AnswerStreamParser.Event]) -> (question: String, answer: String) {
         var question = "", answer = ""

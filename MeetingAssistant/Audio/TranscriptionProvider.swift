@@ -21,6 +21,7 @@ enum TranscriptionError: LocalizedError {
     case localeNotSupported
     case modelNotAvailable(String)
     case audioFormatUnavailable
+    case cloudKeyMissing
 
     var errorDescription: String? {
         switch self {
@@ -32,7 +33,26 @@ enum TranscriptionError: LocalizedError {
             "语音识别模型不可用：\(detail)"
         case .audioFormatUnavailable:
             "无法确定语音识别音频格式"
+        case .cloudKeyMissing:
+            "未配置 Fish Audio API Key，请到设置页「语音识别」填写"
         }
+    }
+}
+
+/// 语音识别方式配置
+enum ASRSettings {
+    static let providerKey = "asr.provider"
+    static let fishKeyAccount = "asr.fishAudio.apiKey"
+
+    static let localProvider = "local"
+    static let fishProvider = "fishAudio"
+
+    static var provider: String {
+        UserDefaults.standard.string(forKey: providerKey) ?? localProvider
+    }
+
+    static var fishAudioKey: String {
+        KeychainStore.load(account: fishKeyAccount) ?? ""
     }
 }
 

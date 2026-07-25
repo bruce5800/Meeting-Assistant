@@ -25,6 +25,8 @@ struct SettingsView: View {
     @AppStorage(DetectionSettings.sweepEnabledKey) private var sweepEnabled = true
     @AppStorage(DetectionSettings.earlyDetectKey) private var earlyDetectEnabled = true
     @State private var draft: ProviderDraft?
+    @AppStorage(ASRSettings.providerKey) private var asrProvider = ASRSettings.localProvider
+    @State private var fishKey = ""
 
     var body: some View {
         NavigationStack {
@@ -80,6 +82,22 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    Picker("识别方式", selection: $asrProvider) {
+                        Text("本地识别（离线）").tag(ASRSettings.localProvider)
+                        Text("Fish Audio 云端").tag(ASRSettings.fishProvider)
+                    }
+                    if asrProvider == ASRSettings.fishProvider {
+                        SecureField("Fish Audio API Key", text: $fishKey)
+                    }
+                } header: {
+                    Text("语音识别")
+                } footer: {
+                    Text(asrProvider == ASRSettings.fishProvider
+                         ? "云端识别按停顿分段上传（约 3~8 秒一段），术语与标点准确率更高；需要网络，音频将发送至 Fish Audio。Key 仅保存在 Keychain。"
+                         : "本地识别完全离线、零延迟，音频不出设备；专业术语识别可能不如云端。")
+                }
+
+                Section {
                     Toggle("LLM 漏检兜底扫描", isOn: $sweepEnabled)
                     Toggle("提前检测（不等定稿）", isOn: $earlyDetectEnabled)
                 } header: {
@@ -92,8 +110,11 @@ struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("完成") { dismiss() }
-                        .accessibilityIdentifier("doneButton")
+                    Button("完成") {
+                        saveFishKey()
+                        dismiss()
+                    }
+                    .accessibilityIdentifier("doneButton")
                 }
             }
             .sheet(item: $draft) { draft in
@@ -101,7 +122,16 @@ struct SettingsView: View {
             }
             .task {
                 migrateLegacyConfigIfNeeded()
+                fishKey = KeychainStore.load(account: ASRSettings.fishKeyAccount) ?? ""
             }
+        }
+    }
+
+    private func saveFishKey() {
+        if fishKey.isEmpty {
+            KeychainStore.delete(account: ASRSettings.fishKeyAccount)
+        } else {
+            KeychainStore.save(fishKey, account: ASRSettings.fishKeyAccount)
         }
     }
 

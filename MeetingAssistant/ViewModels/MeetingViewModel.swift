@@ -94,18 +94,26 @@ final class MeetingViewModel {
         context.insert(session)
         self.session = session
 
-        // 模拟器的麦克风音频栈不可用：默认用脚本化演示流；
-        // 带 -transcribeFile 启动参数时改为喂入音频文件做真实本地识别（ASR 测试）。
+        // 识别源选择：
+        // - 真机：按设置走本地识别或 Fish Audio 云端识别（麦克风）
+        // - 模拟器：麦克风音频栈不可用，默认演示流；带 -transcribeFile 参数时
+        //   喂入音频文件（云端模式走 Fish ASR，本地模式走 SpeechAnalyzer）
+        let useCloud = ASRSettings.provider == ASRSettings.fishProvider
         #if targetEnvironment(simulator)
         let provider: any TranscriptionProvider
         if let filePath = UserDefaults.standard.string(forKey: "transcribeFile") {
-            provider = FileTranscriptionService(fileURL: URL(fileURLWithPath: filePath))
+            let fileURL = URL(fileURLWithPath: filePath)
+            provider = useCloud
+                ? CloudTranscriptionService(source: .file(fileURL))
+                : FileTranscriptionService(fileURL: fileURL)
         } else {
             provider = MockTranscriptionService()
             isDemoMode = true
         }
         #else
-        let provider: any TranscriptionProvider = LocalTranscriptionService()
+        let provider: any TranscriptionProvider = useCloud
+            ? CloudTranscriptionService(source: .microphone)
+            : LocalTranscriptionService()
         #endif
         self.provider = provider
         do {
