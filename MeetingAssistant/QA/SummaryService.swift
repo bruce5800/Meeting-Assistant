@@ -10,7 +10,7 @@ import Foundation
 
 enum SummaryPrompts {
     static let system = """
-    你是会议纪要生成器。根据会议转写和问答记录，输出一份简洁的中文会议纪要，使用以下结构：
+    你是会议纪要生成器。根据会议转写和问答记录，输出一份简洁的会议纪要，使用以下结构：
 
     ## 会议概要
     一两句话概括会议主题与整体情况。
@@ -25,6 +25,8 @@ enum SummaryPrompts {
     - 从会议内容中能识别出的行动项（有负责人/时间就带上）；没有则写「无明确待办」
 
     要求：只依据提供的内容，不要编造；总长不超过 400 字；直接输出纪要，不要任何额外说明。
+    语言：用会议本身的主要语言撰写纪要——英文会议输出英文纪要，四个标题相应改为
+    ## Overview / ## Key Points / ## Questions & Answers / ## Action Items。
     """
 
     static func userMessage(title: String,
@@ -38,6 +40,10 @@ enum SummaryPrompts {
             }
             body += "\n\n【问答记录】\n" + qaLines.joined(separator: "\n\n")
         }
+        // 语言跟随会议本身，避免中文 prompt 把英文会议纪要带成中文
+        body += "\n\n" + (LanguageHint.isPredominantlyChinese(transcript)
+            ? "【纪要语言】中文——必须用中文撰写纪要，使用中文标题。"
+            : "【Summary language】English — you MUST write the summary in English, using the English section headers.")
         return body
     }
 

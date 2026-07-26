@@ -27,6 +27,7 @@ enum QAPrompts {
        注意：只要说话人在询问信息，就算问题——包括询问公司内部数据、项目细节、预算数字等你不知道答案的内容。绝不能因为你无法回答就输出 <skip/>，无法回答的问题走第 3 条的 <kb/> 分支。
     2. 若是问题，先输出：<q>清洗后的问题</q>
        清洗要求：去掉口水话（嗯、啊、呃、就是说、那个、然后、um、uh、like 等）和重复词，修正明显的转写错误，整理成简洁书面问句；保留原意和中英文专业术语，不得改变提问内容。
+       语言要求：清洗后的问题必须与原话使用同一种语言——英文提问就输出英文问句，中文提问就输出中文问句，绝不翻译。
        指代消解：问题中的指代（如「这个项目」「刚才说的方案」）若能从会议转写上下文明确对应到具体名称，替换为具体名称（如「项目 Alpha 的 Q3 预算是多少？」）；上下文无法确定时保持原样，不要猜测。
     3. 然后判断能否凭你的知识可靠回答：
        - 能回答：输出 <a>答案</a>。答案简洁直接、适合会议中快速参考，一般不超过 150 字，必要时用短分点。用提问的主要语言回答。
@@ -41,7 +42,38 @@ enum QAPrompts {
 
         【候选问题文本】
         \(candidate)
+
+        \(LanguageHint.directive(for: candidate))清洗后的问题也必须使用该语言。
         """
+    }
+}
+
+/// 回答语言判定：prompt 本身是中文、知识库资料也可能是中文，模型容易
+/// 忽略「跟随提问语言」的要求，故按字符构成确定性判定后写死指令注入。
+enum LanguageHint {
+    static func isPredominantlyChinese(_ text: String) -> Bool {
+        var cjk = 0
+        var latin = 0
+        for scalar in text.unicodeScalars {
+            switch scalar.value {
+            case 0x4E00...0x9FFF, 0x3400...0x4DBF:
+                cjk += 1
+            case 0x41...0x5A, 0x61...0x7A:
+                latin += 1
+            default:
+                break
+            }
+        }
+        guard cjk + latin > 0 else { return true }
+        // 中文信息密度高：出现少量汉字即视为中文语句
+        return Double(cjk) * 4 >= Double(latin)
+    }
+
+    /// 供 prompt 注入的显式语言指令
+    static func directive(for text: String) -> String {
+        isPredominantlyChinese(text)
+            ? "【回答语言】中文——必须用中文回答。"
+            : "【Answer language】English — you MUST write the answer in English."
     }
 }
 
@@ -52,6 +84,7 @@ enum KBPrompts {
     - 问题中若含指代（如「这个项目」「我们的方案」），结合会议转写判断具体所指再回答；
       若资料中存在多个候选（如多个项目的预算）且无法从上下文确定所指，分别列出各候选的关键数据并说明无法确定。
     - 回答简洁直接，适合会议中快速参考，一般不超过 150 字，必要时用短分点。
+    - 用提问所使用的语言回答：英文问题用英文回答，中文问题用中文回答（资料本身是什么语言不影响回答语言）。
     - 不要在回答中罗列来源文件名（App 会单独展示来源）。
     - 直接输出答案文本，不要任何标签或前缀。
     """
@@ -69,6 +102,8 @@ enum KBPrompts {
 
         【问题】
         \(question)
+
+        \(LanguageHint.directive(for: question))
         """
     }
 }

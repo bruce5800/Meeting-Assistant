@@ -122,6 +122,24 @@ struct KnowledgeBaseTests {
 }
 
 @MainActor
+struct LanguageHintTests {
+    @Test func detectsChineseAndEnglish() {
+        #expect(LanguageHint.isPredominantlyChinese("这个方案的预算是多少？"))
+        // 中英混合但以中文为主
+        #expect(LanguageHint.isPredominantlyChinese("我们的 API 网关限流阈值是多少？"))
+        #expect(!LanguageHint.isPredominantlyChinese(
+            "What is the current P99 latency on the checkout endpoint?"))
+        #expect(!LanguageHint.isPredominantlyChinese(
+            "Should we use Kubernetes horizontal pod auto scaling for holiday traffic?"))
+    }
+
+    @Test func directiveMatchesLanguage() {
+        #expect(LanguageHint.directive(for: "预算是多少？").contains("中文"))
+        #expect(LanguageHint.directive(for: "What is the budget?").contains("English"))
+    }
+}
+
+@MainActor
 struct MeetingExporterTests {
     @Test func markdownContainsAllSections() {
         let records = [
