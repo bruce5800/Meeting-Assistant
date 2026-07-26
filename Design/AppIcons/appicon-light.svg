@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- App 图标 · 浅色（默认）外观：QA-Duo 问答双气泡。不透明背景 -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#2C3E6B"/>
+      <stop offset="1" stop-color="#131C33"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- 后：答案气泡 -->
+  <path d="M470 442 h300 a104 104 0 0 1 104 104 v206 a104 104 0 0 1 -104 104 h-96
+           l-92 84 a14 14 0 0 1 -23 -11 v-73 h-89 a104 104 0 0 1 -104 -104 v-206
+           a104 104 0 0 1 104 -104 z"
+        fill="#3DDC97"/>
+  <g fill="#0F2A22" opacity="0.85">
+    <rect x="512" y="546" width="216" height="42" rx="21"/>
+    <rect x="512" y="626" width="152" height="42" rx="21"/>
+  </g>
+
+  <!-- 前：问题气泡 -->
+  <path d="M214 158 h296 a104 104 0 0 1 104 104 v202 a104 104 0 0 1 -104 104 h-92
+           l-90 82 a14 14 0 0 1 -23 -11 v-71 h-91 a104 104 0 0 1 -104 -104 v-202
+           a104 104 0 0 1 104 -104 z"
+        fill="#FFFFFF" stroke="#131C33" stroke-width="26"/>
+  <g fill="none" stroke="#131C33" stroke-width="62" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M296 300 A 74 74 0 1 1 406 362 L 366 398 L 366 424"/>
+  </g>
+  <circle cx="366" cy="486" r="35" fill="#131C33"/>
+</svg>

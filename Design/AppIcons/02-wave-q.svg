@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 方案二 Wave-Q：问号 + 声波条。最贴合「听见问题」这一核心 -->
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#3E8BFF"/>
+      <stop offset="1" stop-color="#0E39A8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg2)"/>
+
+  <!-- 问号 -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="94" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M396 348 A 116 116 0 1 1 570 446 L 512 500 L 512 548"/>
+  </g>
+  <circle cx="512" cy="646" r="53" fill="#FFFFFF"/>
+
+  <!-- 声波条 -->
+  <g fill="#FFFFFF" opacity="0.92">
+    <rect x="222" y="790" width="52" height="66"  rx="26"/>
+    <rect x="318" y="754" width="52" height="138" rx="26"/>
+    <rect x="414" y="716" width="52" height="214" rx="26"/>
+    <rect x="510" y="742" width="52" height="162" rx="26"/>
+    <rect x="606" y="708" width="52" height="230" rx="26"/>
+    <rect x="702" y="764" width="52" height="118" rx="26"/>
+  </g>
+</svg>

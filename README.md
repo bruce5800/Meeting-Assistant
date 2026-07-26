@@ -174,6 +174,16 @@ MeetingAssistant/
 ├── ViewModels/         实时会议编排
 ├── Views/              界面
 └── Support/            Keychain
+
+Design/AppIcons/        App 图标设计稿（SVG 源文件 + 候选方案对比图）
+TestAudio/              测试音频（Fish Audio TTS 生成，覆盖多问题/长句/中英文）
+```
+
+App 图标为「QA-Duo 问答双气泡」，含 light / dark / tinted 三套外观变体。改图标：编辑
+`Design/AppIcons/appicon-*.svg` 后重新渲染进资源目录：
+
+```bash
+rsvg-convert -w 1024 -h 1024 Design/AppIcons/appicon-light.svg -o MeetingAssistant/Assets.xcassets/AppIcon.appiconset/AppIcon-Light.png
 ```
 
 ---

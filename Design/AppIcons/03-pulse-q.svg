@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 方案三 Pulse-Q：声波环绕问号。强调「实时监听」的动态感 -->
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#8B6BFF"/>
+      <stop offset="1" stop-color="#3B1EA8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg3)"/>
+
+  <!-- 左右声波弧 -->
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="round">
+    <path d="M300 420 A 150 150 0 0 0 300 604" stroke-width="46" opacity="0.95"/>
+    <path d="M196 356 A 250 250 0 0 0 196 668" stroke-width="46" opacity="0.55"/>
+    <path d="M724 420 A 150 150 0 0 1 724 604" stroke-width="46" opacity="0.95"/>
+    <path d="M828 356 A 250 250 0 0 1 828 668" stroke-width="46" opacity="0.55"/>
+  </g>
+
+  <!-- 问号 -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="88" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M420 400 A 100 100 0 1 1 570 484 L 512 532 L 512 570"/>
+  </g>
+  <circle cx="512" cy="654" r="50" fill="#FFFFFF"/>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- App 图标 · 着色（tinted）外观：灰度 + 透明背景。
+       系统按明度映射用户选定的色调——越亮的区域着色越浓。
+       问题气泡取最亮，答案气泡取中灰，形成层次 -->
+
+  <!-- 后：答案气泡（中灰） -->
+  <path d="M470 442 h300 a104 104 0 0 1 104 104 v206 a104 104 0 0 1 -104 104 h-96
+           l-92 84 a14 14 0 0 1 -23 -11 v-73 h-89 a104 104 0 0 1 -104 -104 v-206
+           a104 104 0 0 1 104 -104 z"
+        fill="#9BA0A6"/>
+  <g fill="#2B2E33" opacity="0.9">
+    <rect x="512" y="546" width="216" height="42" rx="21"/>
+    <rect x="512" y="626" width="152" height="42" rx="21"/>
+  </g>
+
+  <!-- 前：问题气泡（最亮） -->
+  <path d="M214 158 h296 a104 104 0 0 1 104 104 v202 a104 104 0 0 1 -104 104 h-92
+           l-90 82 a14 14 0 0 1 -23 -11 v-71 h-91 a104 104 0 0 1 -104 -104 v-202
+           a104 104 0 0 1 104 -104 z"
+        fill="#FFFFFF" stroke="#0A0A0A" stroke-width="30"/>
+  <g fill="none" stroke="#25282D" stroke-width="62" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M296 300 A 74 74 0 1 1 406 362 L 366 398 L 366 424"/>
+  </g>
+  <circle cx="366" cy="486" r="35" fill="#25282D"/>
+</svg>

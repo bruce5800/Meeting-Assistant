@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 方案五 Mic-Q：麦克风 + 问号徽标。最直白的「语音」表达，深色沉稳 -->
+  <defs>
+    <linearGradient id="bg5" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#3A4152"/>
+      <stop offset="1" stop-color="#12151C"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg5)"/>
+
+  <!-- 麦克风 -->
+  <g transform="translate(-40,0)">
+    <rect x="424" y="200" width="176" height="330" rx="88" fill="#FFFFFF"/>
+    <path d="M348 476 a164 164 0 0 0 328 0" fill="none" stroke="#FFFFFF"
+          stroke-width="52" stroke-linecap="round"/>
+    <rect x="486" y="632" width="52" height="112" rx="26" fill="#FFFFFF"/>
+    <rect x="392" y="770" width="240" height="52" rx="26" fill="#FFFFFF"/>
+  </g>
+
+  <!-- 问号徽标 -->
+  <circle cx="742" cy="726" r="176" fill="#3E8BFF"/>
+  <g fill="none" stroke="#FFFFFF" stroke-width="52" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M684 668 A 60 60 0 1 1 774 718 L 742 748 L 742 768"/>
+  </g>
+  <circle cx="742" cy="820" r="28" fill="#FFFFFF"/>
+</svg>

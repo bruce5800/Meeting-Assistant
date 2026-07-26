@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 方案六 Spark-Q：问号 + AI 星芒。表达「问题被即时回答」，青绿配色与其余方案拉开差异
+       （替换掉初版负空间方案：挖空问号在小尺寸完全不可读） -->
+  <defs>
+    <linearGradient id="bg6" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#22D3B4"/>
+      <stop offset="1" stop-color="#0A5C93"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg6)"/>
+
+  <!-- 问号 -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="100" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M348 508 A 118 118 0 1 1 528 600 L 470 652 L 470 696"/>
+  </g>
+  <circle cx="470" cy="796" r="56" fill="#FFFFFF"/>
+
+  <!-- 主星芒 -->
+  <path d="M742 190 C 760 264 780 284 854 302 C 780 320 760 340 742 414
+           C 724 340 704 320 630 302 C 704 284 724 264 742 190 Z"
+        fill="#FFFFFF"/>
+  <!-- 副星芒 -->
+  <path d="M852 452 C 860 486 869 495 903 503 C 869 511 860 520 852 554
+           C 844 520 835 511 801 503 C 835 495 844 486 852 452 Z"
+        fill="#FFFFFF" opacity="0.9"/>
+</svg>

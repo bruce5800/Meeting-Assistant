@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- 方案一 Q-Bubble：对话气泡 + 问号。最经典稳妥，一眼看懂「会议里的提问」 -->
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#5AA0FF"/>
+      <stop offset="1" stop-color="#1348C8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg1)"/>
+
+  <!-- 气泡 -->
+  <path d="M300 208 h424 a132 132 0 0 1 132 132 v268 a132 132 0 0 1 -132 132 h-166
+           l-168 140 a16 16 0 0 1 -26 -12 v-128 h-64 a132 132 0 0 1 -132 -132 v-268
+           a132 132 0 0 1 132 -132 z"
+        fill="#FFFFFF"/>
+
+  <!-- 问号（描边构成，圆头圆角） -->
+  <g fill="none" stroke="#1348C8" stroke-width="86" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M406 396 A 106 106 0 1 1 566 486 L 512 536 L 512 578"/>
+  </g>
+  <circle cx="512" cy="668" r="49" fill="#1348C8"/>
+</svg>
