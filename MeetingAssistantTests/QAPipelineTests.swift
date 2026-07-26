@@ -122,6 +122,37 @@ struct KnowledgeBaseTests {
 }
 
 @MainActor
+struct ASRLanguageTests {
+    @Test func preferredLocalesMatchSelection() {
+        let chinese = ASRLanguage.chinese.preferredLocales.map { $0.identifier(.bcp47) }
+        #expect(chinese.first == "zh-CN")
+        #expect(!chinese.contains { $0.hasPrefix("en") })
+
+        let english = ASRLanguage.english.preferredLocales.map { $0.identifier(.bcp47) }
+        #expect(english.first == "en-US")
+        #expect(!english.contains { $0.hasPrefix("zh") })
+
+        // 自动模式以系统语言优先，并覆盖中英兜底
+        let auto = ASRLanguage.auto.preferredLocales.map { $0.identifier(.bcp47) }
+        #expect(auto.first == Locale.current.identifier(.bcp47))
+        #expect(auto.contains("zh-CN") && auto.contains("en-US"))
+    }
+
+    @Test func settingRoundTrips() {
+        let defaults = UserDefaults.standard
+        let original = defaults.string(forKey: ASRSettings.languageKey)
+        defer {
+            if let original { defaults.set(original, forKey: ASRSettings.languageKey) }
+            else { defaults.removeObject(forKey: ASRSettings.languageKey) }
+        }
+        defaults.set(ASRLanguage.english.rawValue, forKey: ASRSettings.languageKey)
+        #expect(ASRSettings.language == .english)
+        defaults.removeObject(forKey: ASRSettings.languageKey)
+        #expect(ASRSettings.language == .auto)
+    }
+}
+
+@MainActor
 struct LanguageHintTests {
     @Test func detectsChineseAndEnglish() {
         #expect(LanguageHint.isPredominantlyChinese("这个方案的预算是多少？"))

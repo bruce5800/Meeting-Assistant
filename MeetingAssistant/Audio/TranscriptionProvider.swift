@@ -39,10 +39,41 @@ enum TranscriptionError: LocalizedError {
     }
 }
 
+/// 本地识别语言。本地模型是单语种的：用中文模型识别纯英文会严重出错
+/// （实测 Kubernetes → "copernaties horn"），故开放为用户可选。
+enum ASRLanguage: String, CaseIterable, Identifiable {
+    case auto
+    case chinese
+    case english
+
+    var id: String { rawValue }
+
+    var displayName: String {
+        switch self {
+        case .auto: "自动（跟随系统）"
+        case .chinese: "中文"
+        case .english: "English"
+        }
+    }
+
+    /// 候选 locale，按优先级排列；取首个设备支持的。
+    var preferredLocales: [Locale] {
+        switch self {
+        case .auto:
+            [Locale.current, Locale(identifier: "zh_CN"), Locale(identifier: "en_US")]
+        case .chinese:
+            [Locale(identifier: "zh_CN"), Locale(identifier: "zh_TW")]
+        case .english:
+            [Locale(identifier: "en_US"), Locale(identifier: "en_GB")]
+        }
+    }
+}
+
 /// 语音识别方式配置
 enum ASRSettings {
     static let providerKey = "asr.provider"
     static let fishKeyAccount = "asr.fishAudio.apiKey"
+    static let languageKey = "asr.language"
 
     static let localProvider = "local"
     static let fishProvider = "fishAudio"
@@ -53,6 +84,11 @@ enum ASRSettings {
 
     static var fishAudioKey: String {
         KeychainStore.load(account: fishKeyAccount) ?? ""
+    }
+
+    /// 本地识别语言（云端由服务端自动判定，不受此设置影响）
+    static var language: ASRLanguage {
+        ASRLanguage(rawValue: UserDefaults.standard.string(forKey: languageKey) ?? "") ?? .auto
     }
 }
 

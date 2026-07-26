@@ -26,6 +26,7 @@ struct SettingsView: View {
     @AppStorage(DetectionSettings.earlyDetectKey) private var earlyDetectEnabled = true
     @State private var draft: ProviderDraft?
     @AppStorage(ASRSettings.providerKey) private var asrProvider = ASRSettings.localProvider
+    @AppStorage(ASRSettings.languageKey) private var asrLanguage = ASRLanguage.auto.rawValue
     @State private var fishKey = ""
 
     var body: some View {
@@ -88,13 +89,19 @@ struct SettingsView: View {
                     }
                     if asrProvider == ASRSettings.fishProvider {
                         SecureField("Fish Audio API Key", text: $fishKey)
+                    } else {
+                        Picker("识别语言", selection: $asrLanguage) {
+                            ForEach(ASRLanguage.allCases) { language in
+                                Text(language.displayName).tag(language.rawValue)
+                            }
+                        }
                     }
                 } header: {
                     Text("语音识别")
                 } footer: {
                     Text(asrProvider == ASRSettings.fishProvider
-                         ? "云端识别按停顿分段上传（约 3~8 秒一段），术语与标点准确率更高；需要网络，音频将发送至 Fish Audio。Key 仅保存在 Keychain。"
-                         : "本地识别完全离线、零延迟，音频不出设备；专业术语识别可能不如云端。")
+                         ? "云端识别按停顿分段上传（约 3~8 秒一段），自动判别语言，术语与标点准确率更高；需要网络，音频将发送至 Fish Audio。Key 仅保存在 Keychain。"
+                         : "本地识别完全离线、零延迟，音频不出设备。本地模型分语种，语言选错会严重影响准确率（如用中文模型识别英文会议）；纯英文会议请选 English。首次使用某语言需下载模型。")
                 }
 
                 Section {

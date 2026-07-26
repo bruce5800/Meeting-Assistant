@@ -91,13 +91,16 @@ final class LocalTranscriptionService: TranscriptionProvider {
 
     // MARK: - 语言与模型
 
-    /// 中英混合场景：优先中文模型（对夹杂英文术语有一定容错），其次系统语言，再次英文。
+    /// 按设置页的「识别语言」挑选模型；同语言下取首个设备支持的 locale。
+    /// 本地模型是单语种的，语言选错会严重影响准确率。
     /// FileTranscriptionService 复用，故为 internal。
     static func pickLocale() async throws -> Locale {
         let supported = await SpeechTranscriber.supportedLocales
         let supportedIDs = Set(supported.map { $0.identifier(.bcp47) })
-        let preferred = [Locale(identifier: "zh_CN"), Locale.current, Locale(identifier: "en_US")]
-        for candidate in preferred where supportedIDs.contains(candidate.identifier(.bcp47)) {
+        var candidates = ASRSettings.language.preferredLocales
+        // 所选语言不可用时回退到其它语言，避免完全无法转写
+        candidates += [Locale(identifier: "zh_CN"), Locale(identifier: "en_US")]
+        for candidate in candidates where supportedIDs.contains(candidate.identifier(.bcp47)) {
             return candidate
         }
         if let fallback = supported.first { return fallback }
