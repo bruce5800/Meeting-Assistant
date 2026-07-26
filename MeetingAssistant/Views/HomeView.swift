@@ -17,12 +17,22 @@ struct HomeView: View {
     @State private var showLiveMeeting = false
     @State private var showSettings = false
     @State private var showKnowledgeBase = false
+    @State private var showScriptLibrary = false
 
     var body: some View {
         NavigationSplitView {
             sessionList
                 .navigationTitle("会议助手")
                 .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showScriptLibrary = true
+                        } label: {
+                            Image(systemName: "doc.text")
+                        }
+                        .accessibilityIdentifier("scriptLibraryButton")
+                        .accessibilityLabel("发言稿")
+                    }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
                             showKnowledgeBase = true
@@ -69,6 +79,9 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showKnowledgeBase) {
             KnowledgeBaseView()
+        }
+        .sheet(isPresented: $showScriptLibrary) {
+            ScriptLibraryView()
         }
         .fullScreenCover(isPresented: $showLiveMeeting) {
             LiveMeetingView()

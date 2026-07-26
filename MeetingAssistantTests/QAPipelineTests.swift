@@ -122,6 +122,61 @@ struct KnowledgeBaseTests {
 }
 
 @MainActor
+struct ScriptFollowerTests {
+    private let script = """
+    各位好，今天由我来汇报第三季度的进展。
+
+    首先是后端部分，用户服务的重构已经完成了百分之八十。
+    然后是数据库，上周我们做了一次慢查询治理，响应时间下降了三成。
+    最后是前端，新版本首页已经灰度了百分之十的用户。
+    """
+
+    @Test func splitsIntoFollowableLines() {
+        let lines = ScriptFollower.lines(from: script)
+        #expect(lines.count == 4)
+        #expect(lines[0].hasPrefix("各位好"))
+        #expect(!lines.contains { $0.isEmpty })
+    }
+
+    @Test func keepsNormalParagraphIntact() {
+        // 自然段落（≤60 字）不切分：整段就是一个跟随单位
+        let paragraph = "这是第一句话。这是第二句话。这是第三句话。"
+        #expect(ScriptFollower.lines(from: paragraph) == [paragraph])
+    }
+
+    @Test func splitsOverlongParagraphBySentence() {
+        let long = String(repeating: "这是一句需要被切开的稿件内容。", count: 8)
+        let lines = ScriptFollower.lines(from: long)
+        #expect(lines.count > 1)
+        #expect(lines.allSatisfy { $0.count <= 60 })
+        #expect(lines.joined() == long)   // 切分不丢内容
+    }
+
+    @Test func followsSpeechToMatchingLine() {
+        let lines = ScriptFollower.lines(from: script)
+        // 念到第 3 行（含 ASR 常见的口误与缺字）
+        let heard = "然后是数据库上周我们做了一次慢查询治理响应时间下降了三成"
+        let matched = ScriptFollower.matchIndex(recentSpeech: heard, lines: lines, currentIndex: 0)
+        #expect(matched == 2)
+    }
+
+    @Test func holdsPositionWhenSpeechIsOffScript() {
+        let lines = ScriptFollower.lines(from: script)
+        // 即兴插话：与任何一行都不匹配，应返回 nil 让调用方保持原位
+        let matched = ScriptFollower.matchIndex(
+            recentSpeech: "稍等一下我看看这个图表有没有问题啊", lines: lines, currentIndex: 1)
+        #expect(matched == nil)
+    }
+
+    @Test func ignoresTooShortSpeechAndEmptyScript() {
+        let lines = ScriptFollower.lines(from: script)
+        #expect(ScriptFollower.matchIndex(recentSpeech: "嗯", lines: lines, currentIndex: 0) == nil)
+        #expect(ScriptFollower.matchIndex(recentSpeech: "然后是数据库上周我们做了一次慢查询治理",
+                                          lines: [], currentIndex: 0) == nil)
+    }
+}
+
+@MainActor
 struct ASRLanguageTests {
     @Test func preferredLocalesMatchSelection() {
         let chinese = ASRLanguage.chinese.preferredLocales.map { $0.identifier(.bcp47) }

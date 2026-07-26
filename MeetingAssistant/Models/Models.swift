@@ -79,6 +79,31 @@ final class QuestionRecord {
     }
 }
 
+// MARK: - 发言稿（提词器）
+
+@Model
+final class SpeechScript {
+    var id: UUID
+    var title: String
+    var content: String
+    var createdAt: Date
+
+    init(title: String, content: String) {
+        self.id = UUID()
+        self.title = title
+        self.content = content
+        self.createdAt = .now
+    }
+
+    /// 摘要：列表里显示前一小段正文
+    var preview: String {
+        let flattened = content
+            .replacingOccurrences(of: "\n", with: " ")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        return String(flattened.prefix(60))
+    }
+}
+
 // MARK: - LLM Provider
 
 @Model

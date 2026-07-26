@@ -17,6 +17,8 @@ struct LiveMeetingView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var viewModel = MeetingViewModel()
     @AppStorage(DetectionSettings.sweepEnabledKey) private var sweepEnabled = true
+    @State private var activeScript: SpeechScript?
+    @State private var showScriptPicker = false
 
     private var isWideLayout: Bool { horizontalSizeClass == .regular }
 
@@ -29,7 +31,7 @@ struct LiveMeetingView: View {
                 // 交给 HStack 自动分配会被内容固有尺寸左右，比例不稳定。
                 GeometryReader { geometry in
                     HStack(spacing: 0) {
-                        transcriptArea
+                        transcriptPane
                             .frame(width: geometry.size.width * 0.45)
                         Divider()
                         questionArea
@@ -37,7 +39,7 @@ struct LiveMeetingView: View {
                     }
                 }
             } else {
-                transcriptArea
+                transcriptPane
                     .frame(maxHeight: .infinity)
                 Divider()
                 questionArea
@@ -52,6 +54,11 @@ struct LiveMeetingView: View {
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
+        }
+        .sheet(isPresented: $showScriptPicker) {
+            ScriptLibraryView { script in
+                activeScript = script
+            }
         }
         .interactiveDismissDisabled()
     }
@@ -100,6 +107,20 @@ struct LiveMeetingView: View {
 
             Spacer()
 
+            Button {
+                if activeScript == nil {
+                    showScriptPicker = true
+                } else {
+                    activeScript = nil
+                }
+            } label: {
+                Image(systemName: activeScript == nil ? "doc.text" : "doc.text.fill")
+            }
+            .buttonStyle(.bordered)
+            .tint(activeScript == nil ? .secondary : .blue)
+            .accessibilityIdentifier("teleprompterButton")
+            .accessibilityLabel(activeScript == nil ? "打开提词器" : "关闭提词器")
+
             Button(role: .destructive) {
                 Task {
                     await viewModel.stop()
@@ -117,7 +138,22 @@ struct LiveMeetingView: View {
         .padding()
     }
 
-    // MARK: - 实时字幕
+    // MARK: - 实时字幕（含提词器浮层）
+
+    /// 提词器只盖住转写区：问答卡片仍可见可操作，转写与问答管线照常运行。
+    private var transcriptPane: some View {
+        transcriptArea
+            .overlay {
+                if let activeScript {
+                    TeleprompterOverlay(script: activeScript,
+                                        recentSpeech: viewModel.recentSpeechTail) {
+                        self.activeScript = nil
+                    }
+                    .transition(.opacity)
+                }
+            }
+            .animation(.easeInOut(duration: 0.2), value: activeScript?.id)
+    }
 
     private var transcriptArea: some View {
         ScrollViewReader { proxy in

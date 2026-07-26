@@ -83,6 +83,15 @@ final class MeetingViewModel {
         return nil
     }
 
+    /// 提词器跟随用：最近说出的文本（含未定稿部分，跟随才不滞后）
+    var recentSpeechTail: String {
+        var tail = lines.suffix(3).map(\.text).joined(separator: " ")
+        if !volatileText.isEmpty {
+            tail += " " + volatileText
+        }
+        return String(tail.suffix(120))
+    }
+
     // MARK: - 生命周期
 
     func start(context: ModelContext) async {
