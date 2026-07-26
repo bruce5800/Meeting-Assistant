@@ -30,6 +30,7 @@ struct MeetingDetailView: View {
                 Text("全文").tag(2)
             }
             .pickerStyle(.segmented)
+            .readableWidth(480)
             .padding()
 
             switch tab {
@@ -64,6 +65,7 @@ struct MeetingDetailView: View {
             } else {
                 List(sortedQuestions) { record in
                     RecordRow(record: record)
+                        .readableWidth()
                 }
                 .listStyle(.plain)
             }
@@ -114,6 +116,7 @@ struct MeetingDetailView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
+                    .readableWidth()
                 }
             }
         }
@@ -151,6 +154,7 @@ struct MeetingDetailView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
                 .textSelection(.enabled)
+                .readableWidth()
         }
     }
 

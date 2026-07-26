@@ -57,6 +57,12 @@
 - 检索：问题向量化后余弦相似度 Top-K（个人知识库规模下暴力检索足够，无需向量数据库）。
 - 管理界面：文档列表、导入进度、删除文档（连带清理其索引块）。
 
+### F6.5 iPad 适配
+- **首页**：`NavigationSplitView`——iPad 左列表右详情同时可见，iPhone 自动折叠为堆栈导航（行为不变）。
+- **实时会议页**：按 `horizontalSizeClass` 切换——regular（iPad、iPhone Max 横屏）左右分栏，转写 45% / 问答 55%（显式声明比例，避免被内容固有尺寸左右）；compact 保持上下分区。
+- **可读宽度**：纪要、转写全文、问答记录等长文本限制在 760pt 内居中，避免大屏上行长过长影响阅读。
+- 侧栏行只显示时长与问题数（标题已含日期时间），窄侧栏下不换行挤压。
+
 ### F6 会议记录管理
 - 会议会话（Session）为基本单位：开始/结束录制，自动保存完整转写文本 + 问答记录。
 - 历史会议列表（时间、时长、问题数）、会议详情（转写全文 + 问题卡片）。
@@ -83,7 +89,7 @@
 
 | 模块 | 选型 |
 |---|---|
-| UI | SwiftUI |
+| UI | SwiftUI，iPhone / iPad 通用（size class 自适应，非两套代码） |
 | 语音识别 | iOS 26 `SpeechAnalyzer` + `SpeechTranscriber`（本地），`AVAudioEngine` 采集；`TranscriptionProvider` 协议预留云端 |
 | 问题检测 | 本地规则触发 + LLM 确认 |
 | LLM 接入 | OpenAI 兼容 API + SSE 流式，`URLSession` 实现；`LLMProvider` 协议多家可配 |

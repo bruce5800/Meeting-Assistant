@@ -37,13 +37,15 @@ final class MeetingAssistantUITests: XCTestCase {
 
         XCTAssertTrue(app.buttons["stopButton"].waitForExistence(timeout: 15))
 
-        // 演示模式脚本：等待转写行出现并被检测为问题（未配置 LLM 时卡片显示「未配置」提示）
+        // 演示模式脚本：转写上屏
         let transcriptLine = app.staticTexts.matching(
             NSPredicate(format: "label CONTAINS '向量数据库'")).firstMatch
         XCTAssertTrue(transcriptLine.waitForExistence(timeout: 40))
-        let unconfiguredHint = app.staticTexts.matching(
-            NSPredicate(format: "label CONTAINS '未配置 LLM'")).firstMatch
-        XCTAssertTrue(unconfiguredHint.waitForExistence(timeout: 20))
+
+        // 问题被检出（空状态消失）。卡片内容随 LLM 配置而异，故不断言具体文案，
+        // 否则测试结果会依赖模拟器上是否配过 key。
+        let emptyState = app.staticTexts["暂未检测到问题"]
+        XCTAssertTrue(emptyState.waitForNonExistence(timeout: 30))
 
         app.buttons["stopButton"].tap()
 

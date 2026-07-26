@@ -2,7 +2,9 @@
 //  LiveMeetingView.swift
 //  MeetingAssistant
 //
-//  实时会议页：上半区实时字幕，下半区问题卡片流。
+//  实时会议页：字幕区 + 问题卡片流。
+//  窄屏（iPhone、iPad 分屏）上下分区；宽屏（iPad）左右分栏，
+//  两边同时可见且各占满高度。
 //
 
 import SwiftUI
@@ -12,18 +14,35 @@ import UIKit
 struct LiveMeetingView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var viewModel = MeetingViewModel()
     @AppStorage(DetectionSettings.sweepEnabledKey) private var sweepEnabled = true
+
+    private var isWideLayout: Bool { horizontalSizeClass == .regular }
 
     var body: some View {
         VStack(spacing: 0) {
             header
             Divider()
-            transcriptArea
-                .frame(maxHeight: .infinity)
-            Divider()
-            questionArea
-                .frame(maxHeight: .infinity)
+            if isWideLayout {
+                // 显式声明比例：转写是参考信息，问答区（含流式答案）留更多空间。
+                // 交给 HStack 自动分配会被内容固有尺寸左右，比例不稳定。
+                GeometryReader { geometry in
+                    HStack(spacing: 0) {
+                        transcriptArea
+                            .frame(width: geometry.size.width * 0.45)
+                        Divider()
+                        questionArea
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+            } else {
+                transcriptArea
+                    .frame(maxHeight: .infinity)
+                Divider()
+                questionArea
+                    .frame(maxHeight: .infinity)
+            }
         }
         .task {
             await viewModel.start(context: modelContext)
