@@ -14,17 +14,20 @@ final class MockTranscriptionService: TranscriptionProvider {
     private let eventContinuation: AsyncThrowingStream<TranscriptionEvent, Error>.Continuation
     private var scriptTask: Task<Void, Never>?
 
-    private static let script = [
-        "我们开始今天的项目 Alpha 评审会，先同步一下进度",
-        "上周的迭代已经全部上线了，数据看起来不错",
-        "什么是向量数据库？它和普通数据库有什么区别",
-        "嗯那个，我们这个项目 Q3 的内部预算大概是多少来着",
-        "HTTP 和 WebSocket 的区别是什么",
-        "对了，这个方案的压测数据你那边测过的没",
-        // 模拟真机连续说话的超长段：问题在开头，用于验证 volatile 提前检测
-        "我先问一下我们 API 网关的限流阈值是多少然后我继续同步后端进展用户服务重构完成了百分之八十剩下的订单接口这周五之前迁移完数据库上周治理了慢查询响应时间下降了三成",
-        "好，那今天就先到这里",
-    ]
+    /// 随界面语言切换，英文环境下演示内容也是英文
+    private static var script: [String] {
+        [
+            String(localized: "我们开始今天的项目 Alpha 评审会，先同步一下进度"),
+            String(localized: "上周的迭代已经全部上线了，数据看起来不错"),
+            String(localized: "什么是向量数据库？它和普通数据库有什么区别"),
+            String(localized: "嗯那个，我们这个项目 Q3 的内部预算大概是多少来着"),
+            String(localized: "HTTP 和 WebSocket 的区别是什么"),
+            String(localized: "对了，这个方案的压测数据你那边测过的没"),
+            // 模拟真机连续说话的超长段：问题在开头，用于验证 volatile 提前检测
+            String(localized: "我先问一下我们 API 网关的限流阈值是多少然后我继续同步后端进展用户服务重构完成了百分之八十剩下的订单接口这周五之前迁移完数据库上周治理了慢查询响应时间下降了三成"),
+            String(localized: "好，那今天就先到这里"),
+        ]
+    }
 
     init() {
         let (stream, continuation) = AsyncThrowingStream.makeStream(of: TranscriptionEvent.self, throwing: Error.self)

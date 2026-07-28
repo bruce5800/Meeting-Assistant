@@ -237,12 +237,15 @@ struct MeetingExporterTests {
         let md = MeetingExporter.markdown(title: "测试会议", startedAt: .now, durationText: "10:00",
                                           summary: "## 会议概要\n测试。",
                                           records: records, transcript: "转写内容")
+        // 章节标题会随界面语言变化，断言用同样的本地化查表，避免测试依赖运行环境语言
         #expect(md.hasPrefix("# 测试会议"))
         #expect(md.contains("## 会议概要"))
-        #expect(md.contains("## 问答记录"))
-        #expect(md.contains("**问：预算是多少？**（知识库）"))
-        #expect(md.contains("> 来源：资料.md"))
-        #expect(md.contains("## 转写全文"))
+        #expect(md.contains("## " + String(localized: "问答记录")))
+        #expect(md.contains("## " + String(localized: "转写全文")))
+        // 与语言无关的内容：问题原文、来源文档名、来源标签（均由调用方传入）
+        #expect(md.contains("预算是多少？"))
+        #expect(md.contains("资料.md"))
+        #expect(md.contains("知识库"))
     }
 
     @Test func summaryTranscriptCapping() {

@@ -80,11 +80,11 @@ enum SummaryService {
 
     static func sourceLabel(_ source: AnswerSource) -> String {
         switch source {
-        case .direct: "AI 直答"
-        case .kb: "知识库"
-        case .needsKB: "未找到资料"
-        case .failed: "回答失败"
-        case .unconfigured: "未配置"
+        case .direct: String(localized: "AI 直答")
+        case .kb: String(localized: "知识库")
+        case .needsKB: String(localized: "未找到资料")
+        case .failed: String(localized: "回答失败")
+        case .unconfigured: String(localized: "未配置")
         }
     }
 }

@@ -17,8 +17,9 @@ enum FishASRError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .invalidResponse: "Fish Audio 返回了无法解析的内容"
-        case .http(let status, let body): "云端识别失败（HTTP \(status)）：\(String(body.prefix(200)))"
+        case .invalidResponse: String(localized: "Fish Audio 返回了无法解析的内容")
+        case .http(let status, let body):
+            String(localized: "云端识别失败（HTTP \(status)）：\(String(body.prefix(200)))")
         }
     }
 }

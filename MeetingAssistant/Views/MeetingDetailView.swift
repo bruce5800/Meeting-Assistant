@@ -125,7 +125,7 @@ struct MeetingDetailView: View {
     private func generateSummary() {
         let config = LLMSettings.current()
         guard config.isConfigured else {
-            summaryError = "未配置 LLM Provider，请先到设置页配置"
+            summaryError = String(localized: "未配置 LLM Provider，请先到设置页配置")
             return
         }
         summaryError = nil
@@ -213,14 +213,16 @@ private struct RecordRow: View {
     }
 
     private var sourceBadge: some View {
-        let (text, color): (String, Color) = switch record.source {
-        case .direct: ("AI 直答", .green)
-        case .kb: ("知识库", .indigo)
-        case .needsKB: ("未找到资料", .orange)
-        case .failed: ("回答失败", .red)
-        case .unconfigured: ("未配置", .gray)
+        // 文案复用 SummaryService.sourceLabel（已本地化）——注意 Text(变量) 不会
+        // 走本地化查表，必须传入已翻译好的字符串
+        let color: Color = switch record.source {
+        case .direct: .green
+        case .kb: .indigo
+        case .needsKB: .orange
+        case .failed: .red
+        case .unconfigured: .gray
         }
-        return Text(text)
+        return Text(SummaryService.sourceLabel(record.source))
             .font(.caption2.weight(.medium))
             .padding(.horizontal, 6)
             .padding(.vertical, 2)

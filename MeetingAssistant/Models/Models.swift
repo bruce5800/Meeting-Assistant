@@ -31,7 +31,7 @@ final class MeetingSession {
     }
 
     var durationText: String {
-        guard let endedAt else { return "进行中" }
+        guard let endedAt else { return String(localized: "进行中") }
         let seconds = max(0, Int(endedAt.timeIntervalSince(startedAt)))
         if seconds >= 3600 {
             return String(format: "%d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, seconds % 60)

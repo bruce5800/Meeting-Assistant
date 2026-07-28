@@ -139,7 +139,7 @@ struct ScriptLibraryView: View {
     #if DEBUG
     /// 调试用示例稿：内容与模拟器演示模式的转写脚本对应，便于验证自动跟随。
     private func insertSampleScript() {
-        let sample = """
+        let sample = String(localized: """
         我们开始今天的项目 Alpha 评审会，先同步一下进度。
         上周的迭代已经全部上线了，数据看起来不错。
         接下来说一下大家关心的几个技术问题。
@@ -148,8 +148,8 @@ struct ScriptLibraryView: View {
         剩下的订单接口这周五之前迁移完。
         数据库上周治理了慢查询，响应时间下降了三成。
         好，那今天就先到这里。
-        """
-        modelContext.insert(SpeechScript(title: "示例-评审会发言稿", content: sample))
+        """)
+        modelContext.insert(SpeechScript(title: String(localized: "示例-评审会发言稿"), content: sample))
         try? modelContext.save()
     }
     #endif

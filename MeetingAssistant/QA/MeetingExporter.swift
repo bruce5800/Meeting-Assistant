@@ -23,30 +23,31 @@ enum MeetingExporter {
                          summary: String,
                          records: [ExportRecord],
                          transcript: String) -> String {
+        let time = startedAt.formatted(date: .long, time: .shortened)
         var md = "# \(title)\n\n"
-        md += "- 时间：\(startedAt.formatted(date: .long, time: .shortened))\n"
-        md += "- 时长：\(durationText)\n"
-        md += "- 问题数：\(records.count)\n\n"
+        md += String(localized: "- 时间：\(time)") + "\n"
+        md += String(localized: "- 时长：\(durationText)") + "\n"
+        md += String(localized: "- 问题数：\(records.count)") + "\n\n"
 
         if !summary.isEmpty {
             md += "\(summary)\n\n"
         }
 
         if !records.isEmpty {
-            md += "## 问答记录\n\n"
+            md += "## " + String(localized: "问答记录") + "\n\n"
             for record in records {
-                md += "**问：\(record.question)**（\(record.sourceLabel)）\n\n"
+                md += String(localized: "**问：\(record.question)**（\(record.sourceLabel)）") + "\n\n"
                 if !record.answer.isEmpty {
                     md += "\(record.answer)\n\n"
                 }
                 if !record.kbSources.isEmpty {
-                    md += "> 来源：\(record.kbSources)\n\n"
+                    md += "> " + String(localized: "来源：\(record.kbSources)") + "\n\n"
                 }
             }
         }
 
         if !transcript.isEmpty {
-            md += "## 转写全文\n\n\(transcript)\n"
+            md += "## " + String(localized: "转写全文") + "\n\n\(transcript)\n"
         }
         return md
     }

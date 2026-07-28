@@ -148,7 +148,7 @@ struct KnowledgeBaseView: View {
     #if DEBUG
     /// 模拟器/调试用示例资料，内容与演示脚本的问题对应。
     private func importSampleDocument() async {
-        let sample = """
+        let sample = String(localized: """
         # 项目 Alpha Q3 预算
         项目 Alpha 的 Q3 内部预算总额为 120 万元：研发 80 万、市场 25 万、运维 15 万。预算审批人为财务部王总，超支需提前两周申请。
 
@@ -160,8 +160,8 @@ struct KnowledgeBaseView: View {
 
         # 压测数据（2026 年 6 月）
         核心下单接口压测结果：P99 延迟 180ms，平均延迟 45ms；单集群最大吞吐 3200 QPS；瓶颈在订单库写入，计划 Q3 分库分表解决。
-        """
-        try? await importContent(name: "示例-项目资料.md", type: "md", text: sample)
+        """)
+        try? await importContent(name: String(localized: "示例-项目资料.md"), type: "md", text: sample)
     }
     #endif
 }

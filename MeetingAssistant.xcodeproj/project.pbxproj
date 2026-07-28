@@ -187,11 +187,12 @@
 				};
 			};
 			buildConfigurationList = DFC0602A3012947E000220FA /* Build configuration list for PBXProject "MeetingAssistant" */;
-			developmentRegion = en;
+			developmentRegion = "zh-Hans";
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = DFC060263012947E000220FA;
 			minimizedProjectReferenceProxies = 1;

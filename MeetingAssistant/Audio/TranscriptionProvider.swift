@@ -26,15 +26,15 @@ enum TranscriptionError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .micPermissionDenied:
-            "未获得麦克风权限，请在系统设置中允许会议助手使用麦克风"
+            String(localized: "未获得麦克风权限，请在系统设置中允许会议助手使用麦克风")
         case .localeNotSupported:
-            "当前设备不支持本地语音识别（中文/英文模型均不可用）"
+            String(localized: "当前设备不支持本地语音识别（中文/英文模型均不可用）")
         case .modelNotAvailable(let detail):
-            "语音识别模型不可用：\(detail)"
+            String(localized: "语音识别模型不可用：\(detail)")
         case .audioFormatUnavailable:
-            "无法确定语音识别音频格式"
+            String(localized: "无法确定语音识别音频格式")
         case .cloudKeyMissing:
-            "未配置 Fish Audio API Key，请到设置页「语音识别」填写"
+            String(localized: "未配置 Fish Audio API Key，请到设置页「语音识别」填写")
         }
     }
 }
@@ -50,8 +50,8 @@ enum ASRLanguage: String, CaseIterable, Identifiable {
 
     var displayName: String {
         switch self {
-        case .auto: "自动（跟随系统）"
-        case .chinese: "中文"
+        case .auto: String(localized: "自动（跟随系统）")
+        case .chinese: String(localized: "中文")
         case .english: "English"
         }
     }

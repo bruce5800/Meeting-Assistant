@@ -15,8 +15,8 @@ enum KnowledgeImportError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .unreadable: "无法读取文件内容（格式或编码不支持）"
-        case .emptyContent: "文件中没有可用的文本内容"
+        case .unreadable: String(localized: "无法读取文件内容（格式或编码不支持）")
+        case .emptyContent: String(localized: "文件中没有可用的文本内容")
         }
     }
 }

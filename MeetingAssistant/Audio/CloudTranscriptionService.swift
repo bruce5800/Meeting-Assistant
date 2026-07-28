@@ -107,7 +107,7 @@ final class CloudTranscriptionService: TranscriptionProvider {
         uploadTask = Task {
             do {
                 for await chunk in chunkStream {
-                    continuation.yield(.volatile("〔云端识别中…〕"))
+                    continuation.yield(.volatile(String(localized: "〔云端识别中…〕")))
                     let wav = FishASRClient.wavData(fromPCM16: chunk, sampleRate: rate)
                     let text = try await FishASRClient.transcribe(wavData: wav, apiKey: apiKey)
                     let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)

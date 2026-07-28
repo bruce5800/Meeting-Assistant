@@ -46,7 +46,7 @@ enum KnowledgeRetriever {
         }
         var hits: [Hit] = []
         for item in top {
-            let docName = item.chunk.document?.name ?? "未知文档"
+            let docName = item.chunk.document?.name ?? String(localized: "未知文档")
             hits.append(Hit(text: item.chunk.text, docName: docName, score: item.score))
         }
         return hits

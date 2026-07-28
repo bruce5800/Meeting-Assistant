@@ -76,11 +76,11 @@ enum LLMError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidURL:
-            "API 地址无效，请检查设置"
+            String(localized: "API 地址无效，请检查设置")
         case .invalidResponse:
-            "LLM 服务返回了无法解析的内容"
+            String(localized: "LLM 服务返回了无法解析的内容")
         case .http(let status, let body):
-            "请求失败（HTTP \(status)）：\(String(body.prefix(200)))"
+            String(localized: "请求失败（HTTP \(status)）：\(String(body.prefix(200)))")
         }
     }
 }

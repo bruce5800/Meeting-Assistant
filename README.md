@@ -170,6 +170,7 @@ MeetingAssistant/
 │   └── KnowledgeRetriever             Top-K 检索
 ├── Teleprompter/
 │   └── ScriptFollower                 稿件切行 + 语音位置匹配
+├── Localizable.xcstrings  中英文案（源语言 zh-Hans，含 en 译文）
 ├── Models/Models.swift SwiftData 模型
 ├── ViewModels/         实时会议编排
 ├── Views/              界面
@@ -184,6 +185,19 @@ App 图标为「QA-Duo 问答双气泡」，含 light / dark / tinted 三套外�
 
 ```bash
 rsvg-convert -w 1024 -h 1024 Design/AppIcons/appicon-light.svg -o MeetingAssistant/Assets.xcassets/AppIcon.appiconset/AppIcon-Light.png
+```
+
+### 本地化
+
+界面支持简体中文与英文，源语言为 `zh-Hans`，译文在 `MeetingAssistant/Localizable.xcstrings`。
+新增文案时注意：SwiftUI 的 `Text("中文")` 会自动查表，但 **`Text(变量)` 不会**——
+非字面量必须显式 `String(localized:)`（错误描述、枚举标签、导出文本都属于此类）。
+
+问答与纪要的**输出语言跟随会议内容本身**，与界面语言无关（见 `LanguageHint`）。
+英文环境验证：
+
+```bash
+xcrun simctl launch <UDID> bruce.MeetingAssistant -AppleLanguages "(en)" -AppleLocale en_US
 ```
 
 ### App Store 预览图

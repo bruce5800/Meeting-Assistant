@@ -147,7 +147,7 @@ final class MeetingViewModel {
                 }
             } catch {
                 if self.phase == .recording {
-                    self.phase = .failed("转写中断：\(error.localizedDescription)")
+                    self.phase = .failed(String(localized: "转写中断：\(error.localizedDescription)"))
                 }
             }
         }
@@ -447,9 +447,8 @@ final class MeetingViewModel {
     }
 
     private static func defaultTitle() -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "zh_CN")
-        formatter.dateFormat = "M月d日 HH:mm"
-        return "会议 " + formatter.string(from: .now)
+        // 跟随用户区域设置：中文「会议 7月28日 10:28」/ 英文「Meeting Jul 28, 10:28」
+        let stamp = Date.now.formatted(.dateTime.month().day().hour().minute())
+        return String(localized: "会议 \(stamp)")
     }
 }
