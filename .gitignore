@@ -27,3 +27,6 @@ playground.xcworkspace
 
 # 日志与临时文件
 *.log
+
+# 截图排版工具的编译产物（源码 make_shots.swift 已入库）
+Design/app-store/make_shots

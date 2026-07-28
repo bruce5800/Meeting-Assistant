@@ -80,7 +80,8 @@ struct LiveMeetingView: View {
                 Text(viewModel.startedAt, style: .timer)
                     .font(.headline)
                     .monospacedDigit()
-                if viewModel.isDemoMode {
+                // 角标可用启动参数 -hideDemoBadge YES 隐藏，仅用于制作 App Store 截图
+                if viewModel.isDemoMode, !UserDefaults.standard.bool(forKey: "hideDemoBadge") {
                     Text("演示模式")
                         .font(.caption2)
                         .padding(.horizontal, 6)

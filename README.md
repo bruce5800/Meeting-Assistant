@@ -186,6 +186,22 @@ App 图标为「QA-Duo 问答双气泡」，含 light / dark / tinted 三套外�
 rsvg-convert -w 1024 -h 1024 Design/AppIcons/appicon-light.svg -o MeetingAssistant/Assets.xcassets/AppIcon.appiconset/AppIcon-Light.png
 ```
 
+### App Store 预览图
+
+`Design/app-store/` 下是上架预览图与生成器。原始截图取自 **iPhone 17 Pro Max 模拟器**
+（原生 1320×2868，正是 App Store Connect 要求的 6.9" 尺寸）：
+
+```bash
+xcrun simctl status_bar <UDID> override --time "9:41" --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3
+xcrun simctl launch <UDID> bruce.MeetingAssistant -hideDemoBadge YES
+```
+
+`-hideDemoBadge YES` 仅用于隐藏模拟器演示模式角标。截好的图放进 `raw/`，然后排版：
+
+```bash
+cd Design/app-store && swiftc -O make_shots.swift -o make_shots && ./make_shots raw zh zh
+```
+
 ---
 
 ## 测试
