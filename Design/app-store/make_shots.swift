@@ -3,11 +3,35 @@ import ImageIO
 
 // App Store marketing-screenshot compositor.
 //   swiftc -O make_shots.swift -o make_shots && ./make_shots <rawDir> <outDir> <zh|en>
-// Reads the device screenshots from <rawDir>, lays each onto a 1320×2868 canvas
-// (the 6.9" size App Store Connect asks for, and exactly what the iPhone 17 Pro Max
-// simulator produces) in the app icon's navy palette, and writes alpha-free PNGs.
+// Reads the device screenshots from <rawDir>, lays each onto the canvas App Store
+// Connect asks for, in the app icon's navy palette, and writes alpha-free PNGs.
+// The canvas is picked from the source screenshot's aspect ratio:
+//   iPhone 6.9"  1320×2868  (iPhone 17 Pro Max simulator, native)
+//   iPad  13"    2064×2752  (iPad Pro 13-inch simulator, native)
 
-let W: CGFloat = 1320, H: CGFloat = 2868
+struct Canvas {
+    let w: CGFloat, h: CGFloat
+    let titleTop: CGFloat, titleSizeZH: CGFloat, titleSizeEN: CGFloat
+    let barY: CGFloat, barW: CGFloat, barH: CGFloat
+    let subY: CGFloat, subSize: CGFloat
+    let deviceTop: CGFloat, deviceW: CGFloat
+
+    static let iPhone = Canvas(w: 1320, h: 2868,
+                               titleTop: 138, titleSizeZH: 98, titleSizeEN: 84,
+                               barY: 318, barW: 128, barH: 11,
+                               subY: 372, subSize: 48,
+                               deviceTop: 596, deviceW: 980)
+    static let iPad = Canvas(w: 2064, h: 2752,
+                             titleTop: 150, titleSizeZH: 124, titleSizeEN: 108,
+                             barY: 356, barW: 160, barH: 13,
+                             subY: 424, subSize: 58,
+                             deviceTop: 625, deviceW: 1490)
+
+    /// 竖长比 > 1.6 认为是 iPhone，接近 4:3 的是 iPad
+    static func matching(_ image: CGImage) -> Canvas {
+        CGFloat(image.height) / CGFloat(image.width) > 1.6 ? .iPhone : .iPad
+    }
+}
 
 struct Shot {
     let file: String
@@ -114,15 +138,19 @@ func drawPhone(_ ctx: CGContext, image: CGImage, center: CGPoint, width: CGFloat
 
 // MARK: - Canvas
 
-func render(_ shot: Shot, titleSize: CGFloat, imgDir: String, outPath: String) {
+func render(_ shot: Shot, lang: String, imgDir: String, outPath: String) {
+    let img = loadImage("\(imgDir)/\(shot.file)")
+    let c = Canvas.matching(img)
+    let titleSize = lang == "zh" ? c.titleSizeZH : c.titleSizeEN
+
     let space = CGColorSpace(name: CGColorSpace.sRGB)!
-    guard let ctx = CGContext(data: nil, width: Int(W), height: Int(H), bitsPerComponent: 8,
+    guard let ctx = CGContext(data: nil, width: Int(c.w), height: Int(c.h), bitsPerComponent: 8,
                               bytesPerRow: 0, space: space,
                               bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else {
         fatalError("no context")
     }
     // 全局翻转 → 下面一律用左上角坐标系
-    ctx.translateBy(x: 0, y: H)
+    ctx.translateBy(x: 0, y: c.h)
     ctx.scaleBy(x: 1, y: -1)
     NSGraphicsContext.saveGraphicsState()
     NSGraphicsContext.current = NSGraphicsContext(cgContext: ctx, flipped: true)
@@ -131,23 +159,24 @@ func render(_ shot: Shot, titleSize: CGFloat, imgDir: String, outPath: String) {
     let grad = CGGradient(colorsSpace: space,
                           colors: [bgTop.cgColor, bgBottom.cgColor] as CFArray,
                           locations: [0, 1])!
-    ctx.drawLinearGradient(grad, start: .zero, end: CGPoint(x: 0, y: H), options: [])
+    ctx.drawLinearGradient(grad, start: .zero, end: CGPoint(x: 0, y: c.h), options: [])
 
     // 标题 + 绿色短杠 + 副标题
+    let side = c.w * 0.05
     draw(text: shot.title, size: titleSize, weight: .bold, color: ink,
-         in: CGRect(x: 64, y: 138 + (98 - titleSize) / 2, width: W - 128, height: 150))
-    let bar = CGRect(x: W / 2 - 64, y: 318, width: 128, height: 11)
-    ctx.addPath(CGPath(roundedRect: bar, cornerWidth: 5.5, cornerHeight: 5.5, transform: nil))
+         in: CGRect(x: side, y: c.titleTop, width: c.w - side * 2, height: titleSize * 2.2))
+    let bar = CGRect(x: c.w / 2 - c.barW / 2, y: c.barY, width: c.barW, height: c.barH)
+    ctx.addPath(CGPath(roundedRect: bar, cornerWidth: c.barH / 2,
+                       cornerHeight: c.barH / 2, transform: nil))
     ctx.setFillColor(accent.cgColor)
     ctx.fillPath()
-    draw(text: shot.sub, size: 48, weight: .medium, color: muted,
-         in: CGRect(x: 86, y: 372, width: W - 172, height: 150))
+    draw(text: shot.sub, size: c.subSize, weight: .medium, color: muted,
+         in: CGRect(x: side * 1.4, y: c.subY, width: c.w - side * 2.8, height: c.subSize * 3))
 
-    // 手机
-    let img = loadImage("\(imgDir)/\(shot.file)")
-    let phoneW: CGFloat = 980
-    let phoneH = phoneW * CGFloat(img.height) / CGFloat(img.width)
-    drawPhone(ctx, image: img, center: CGPoint(x: W / 2, y: 596 + phoneH / 2), width: phoneW)
+    // 设备
+    let deviceH = c.deviceW * CGFloat(img.height) / CGFloat(img.width)
+    drawPhone(ctx, image: img, center: CGPoint(x: c.w / 2, y: c.deviceTop + deviceH / 2),
+              width: c.deviceW)
 
     NSGraphicsContext.restoreGraphicsState()
     guard let out = ctx.makeImage(),
@@ -167,11 +196,10 @@ guard args.count == 4, args[3] == "zh" || args[3] == "en" else {
     fputs("usage: make_shots <rawDir> <outDir> <zh|en>\n", stderr)
     exit(2)
 }
-let imgDir = args[1], outDir = args[2]
-let shots = args[3] == "zh" ? zhShots : enShots
-let titleSize: CGFloat = args[3] == "zh" ? 98 : 84
+let imgDir = args[1], outDir = args[2], lang = args[3]
+let shots = lang == "zh" ? zhShots : enShots
 try? FileManager.default.createDirectory(atPath: outDir, withIntermediateDirectories: true)
 for (i, shot) in shots.enumerated() {
-    render(shot, titleSize: titleSize, imgDir: imgDir,
+    render(shot, lang: lang, imgDir: imgDir,
            outPath: "\(outDir)/\(String(format: "%02d", i + 1)).png")
 }

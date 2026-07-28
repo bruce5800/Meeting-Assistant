@@ -202,8 +202,10 @@ xcrun simctl launch <UDID> bruce.MeetingAssistant -AppleLanguages "(en)" -AppleL
 
 ### App Store 预览图
 
-`Design/app-store/` 下是上架预览图与生成器。原始截图取自 **iPhone 17 Pro Max 模拟器**
-（原生 1320×2868，正是 App Store Connect 要求的 6.9" 尺寸）：
+`Design/app-store/` 下是上架预览图与生成器。成品四套（语言 × 设备各一套，App Store Connect
+按这两个维度分别要求）：`zh/` `en/`（iPhone 6.9"，1320×2868）与 `zh-ipad/` `en-ipad/`
+（iPad 13"，2064×2752）。原始截图取自 **iPhone 17 Pro Max / iPad Pro 13-inch 模拟器**——
+这两台的原生截图尺寸正好等于 App Store 要求，无需缩放。生成器按源图长宽比自动选择画布：
 
 ```bash
 xcrun simctl status_bar <UDID> override --time "9:41" --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3
@@ -213,7 +215,11 @@ xcrun simctl launch <UDID> bruce.MeetingAssistant -hideDemoBadge YES
 `-hideDemoBadge YES` 仅用于隐藏模拟器演示模式角标。截好的图放进 `raw/`，然后排版：
 
 ```bash
-cd Design/app-store && swiftc -O make_shots.swift -o make_shots && ./make_shots raw zh zh
+cd Design/app-store && swiftc -O make_shots.swift -o make_shots
+./make_shots raw zh zh              # iPhone 中文
+./make_shots raw-en en en           # iPhone 英文
+./make_shots raw-ipad zh-ipad zh    # iPad 中文
+./make_shots raw-ipad-en en-ipad en # iPad 英文
 ```
 
 ---

@@ -64,6 +64,8 @@ struct HomeView: View {
                     .padding(.horizontal)
                     .padding(.bottom, 8)
                 }
+                // 默认 320pt 的侧栏放不下标题 + 三个工具栏按钮，标题会被截断
+                .navigationSplitViewColumnWidth(min: 340, ideal: 420, max: 480)
         } detail: {
             if let selectedSession {
                 MeetingDetailView(session: selectedSession)
