@@ -1,1491 +1,1519 @@
 {
-  "sourceLanguage": "zh-Hans",
-  "strings": {
-    "会议助手": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Meeting Assistant"
+  "sourceLanguage" : "zh-Hans",
+  "strings" : {
+    "- 时长：%@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "- Duration: %@"
           }
         }
       }
     },
-    "发言稿": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scripts"
+    "- 时间：%@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "- Time: %@"
           }
         }
       }
     },
-    "开始会议": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Start Meeting"
+    "- 问题数：%lld" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "- Questions: %lld"
           }
         }
       }
     },
-    "选择一场会议": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Select a Meeting"
+    "（无转写内容）" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(No transcript)"
           }
         }
       }
     },
-    "从左侧列表选择会议，查看问答记录、纪要与转写全文": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick a meeting from the list to see its Q&A, summary and transcript"
+    "〔云端识别中…〕" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Transcribing in cloud…]"
           }
         }
       }
     },
-    "还没有会议记录": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Meetings Yet"
+    "**问：%@**（%@）" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Q: %@** (%@)"
           }
         }
       }
     },
-    "点击下方按钮开始第一场会议": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tap the button below to start your first meeting"
+    "# 项目 Alpha Q3 预算\n项目 Alpha 的 Q3 内部预算总额为 120 万元：研发 80 万、市场 25 万、运维 15 万。预算审批人为财务部王总，超支需提前两周申请。\n\n# 项目 Beta Q3 预算\n项目 Beta 的 Q3 内部预算总额为 200 万元：研发 120 万、市场 50 万、运维 30 万。预算审批人为财务部李总。\n\n# API 网关配置\n生产环境 API 网关的限流阈值为每秒 5000 次请求（5000 QPS），突发流量上限 8000 QPS，超出后返回 429。灰度环境限流为 1000 QPS。\n\n# 压测数据（2026 年 6 月）\n核心下单接口压测结果：P99 延迟 180ms，平均延迟 45ms；单集群最大吞吐 3200 QPS；瓶颈在订单库写入，计划 Q3 分库分表解决。" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "# Project Alpha Q3 Budget\nProject Alpha's internal Q3 budget totals 1.2M CNY: 800k engineering, 250k marketing, 150k operations. Approver is Wang from Finance; overruns need two weeks' notice.\n\n# Project Beta Q3 Budget\nProject Beta's internal Q3 budget totals 2.0M CNY: 1.2M engineering, 500k marketing, 300k operations. Approver is Li from Finance.\n\n# API Gateway Configuration\nThe production API gateway rate limit is 5000 requests per second (5000 QPS), with a burst ceiling of 8000 QPS; excess traffic gets a 429. The staging limit is 1000 QPS.\n\n# Load Test Results (June 2026)\nCore checkout endpoint: P99 latency 180ms, average 45ms; peak single-cluster throughput 3200 QPS. The bottleneck is order-table writes, to be addressed by sharding in Q3."
           }
         }
       }
     },
-    "%lld 个问题": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld questions"
+    "%@ · %@" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
           }
         }
       }
     },
-    "正在准备语音识别…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preparing speech recognition…"
+    "%lld" : {
+
+    },
+    "%lld 个片段" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld chunks"
+          }
+        }
+      }
+    },
+    "%lld 个问题" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld questions"
           }
         }
       }
     },
-    "演示模式": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Demo Mode"
+    "AI 正在分析…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI is analyzing…"
           }
         }
       }
     },
-    "正在结束…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wrapping up…"
+    "AI 直答" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI Answer"
           }
         }
       }
     },
-    "已结束": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ended"
+    "API Key" : {
+
+    },
+    "API 地址" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API endpoint"
           }
         }
       }
     },
-    "启动失败": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Failed to Start"
+    "API 地址无效，请检查设置" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid API endpoint — check Settings"
           }
         }
       }
+    },
+    "DeepSeek" : {
+
     },
-    "打开提词器": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open teleprompter"
+    "Fish Audio API Key" : {
+
+    },
+    "Fish Audio 云端" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fish Audio (cloud)"
           }
         }
       }
     },
-    "关闭提词器": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Close teleprompter"
+    "Fish Audio 返回了无法解析的内容" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fish Audio returned an unreadable response"
           }
         }
       }
     },
-    "结束会议": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "End Meeting"
+    "HTTP 和 WebSocket 的区别是什么" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's the difference between HTTP and WebSocket"
           }
         }
       }
     },
-    "关闭": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Close"
+    "LLM Provider" : {
+
+    },
+    "LLM 服务返回了无法解析的内容" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The LLM service returned an unreadable response"
           }
         }
       }
     },
-    "正在聆听…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Listening…"
+    "LLM 漏检兜底扫描" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LLM sweep for missed questions"
           }
         }
       }
+    },
+    "OpenAI" : {
+
     },
-    "检测到的问题": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detected Questions"
+    "上周的迭代已经全部上线了，数据看起来不错" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last week's iteration is fully shipped and the numbers look good"
           }
         }
       }
     },
-    "兜底扫描": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sweep"
+    "中文" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chinese"
           }
         }
       }
     },
-    "手动提问": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ask"
+    "云端识别失败（HTTP %lld）：%@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cloud recognition failed (HTTP %lld): %@"
           }
         }
       }
     },
-    "暂未检测到问题": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Questions Yet"
+    "云端识别按停顿分段上传（约 3~8 秒一段），自动判别语言，术语与标点准确率更高；需要网络，音频将发送至 Fish Audio。Key 仅保存在 Keychain。" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cloud recognition uploads in pause-aligned chunks (about 3–8 s each) and detects the language automatically, with better accuracy on terminology and punctuation. Requires a network connection; audio is sent to Fish Audio. The key is stored only in the Keychain."
           }
         }
       }
     },
-    "识别到提问后会自动出现在这里": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Questions appear here as they're asked"
+    "什么是向量数据库？它和普通数据库有什么区别" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What is a vector database? How is it different from a regular database"
           }
         }
       }
     },
-    "AI 正在分析…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AI is analyzing…"
+    "从左侧列表选择会议，查看问答记录、纪要与转写全文" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a meeting from the list to see its Q&A, summary and transcript"
           }
         }
       }
     },
-    "涉及私有信息，正在检索知识库…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Private info — searching knowledge base…"
+    "从文件导入" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import from File"
           }
         }
       }
     },
-    "知识库中未找到相关资料，可在首页「知识库」导入文档": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nothing relevant found — import documents from the Knowledge Base"
+    "会议 %@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting %@"
           }
         }
       }
     },
-    "重试": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retry"
+    "会议助手" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting Assistant"
           }
         }
       }
     },
-    "未配置 LLM API，问题已记录。请到设置页配置后使用问答。": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No LLM configured. Question saved — set up a provider in Settings to get answers."
+    "保存" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
           }
         }
       }
     },
-    "来源：%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Source: %@"
+    "兜底扫描" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweep"
           }
         }
       }
     },
-    "内容": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Content"
+    "兜底扫描：每累计约 100 字或 20 秒，用一次小额 LLM 调用扫描规则漏掉的问题，结束会议前做收尾扫描（会议中可快速开关）。提前检测：连续说话时语音识别可能几十秒不定稿，开启后在灰色未定稿文本上即时检测问题，命中并确认说完后立刻出卡。" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sweep: every ~100 characters or 20 seconds, one small LLM call catches questions the rules missed, plus a final sweep when the meeting ends (toggleable mid-meeting). Early detection: during continuous speech, recognition may not finalize for tens of seconds — this spots questions in the grey draft text and creates the card as soon as the question is complete."
           }
         }
       }
     },
-    "问答（%lld）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Q&A (%lld)"
+    "全文" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcript"
           }
         }
       }
     },
-    "纪要": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Summary"
+    "关闭" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
           }
         }
       }
     },
-    "全文": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Transcript"
+    "关闭提词器" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close teleprompter"
           }
         }
       }
     },
-    "本场会议未记录问题": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No questions recorded"
+    "内容" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Content"
           }
         }
       }
     },
-    "还没有会议纪要": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Summary Yet"
+    "删除" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
           }
         }
       }
     },
-    "基于转写全文与问答记录，由 AI 生成结构化纪要": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AI builds a structured summary from the transcript and Q&A"
+    "发言稿" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scripts"
           }
         }
       }
     },
-    "生成会议纪要": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Generate Summary"
+    "取消" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
           }
         }
       }
     },
-    "生成中…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Generating…"
+    "名称（如 DeepSeek）" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name (e.g. DeepSeek)"
           }
         }
       }
     },
-    "重新生成": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Regenerate"
+    "向量模型不可用，已降级为文本匹配检索" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vector model unavailable — using text matching"
           }
         }
       }
     },
-    "未配置 LLM Provider，请先到设置页配置": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No LLM provider configured — set one up in Settings first"
+    "启动失败" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed to Start"
           }
         }
       }
     },
-    "（无转写内容）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "(No transcript)"
+    "嗯那个，我们这个项目 Q3 的内部预算大概是多少来着" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um so, what was our internal Q3 budget for this project again"
           }
         }
       }
     },
-    "AI 直答": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "AI Answer"
+    "回答失败" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Failed"
           }
         }
       }
     },
-    "知识库": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Knowledge Base"
+    "基于转写全文与问答记录，由 AI 生成结构化纪要" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI builds a structured summary from the transcript and Q&A"
           }
         }
       }
     },
-    "未找到资料": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not Found"
+    "好" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
           }
         }
       }
     },
-    "回答失败": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Failed"
+    "好，那今天就先到这里" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alright, let's wrap up here for today"
           }
         }
       }
     },
-    "未配置": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not Set Up"
+    "如：季度汇报开场" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e.g. Quarterly review opening"
           }
         }
       }
     },
-    "设置": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
+    "完成" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Done"
           }
         }
       }
     },
-    "完成": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
+    "对了，这个方案的压测数据你那边测过的没" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By the way, did you ever run load tests on this design"
           }
         }
       }
     },
-    "删除": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete"
+    "导入 PDF、TXT 或 Markdown 资料，会议中 AI 无法直答的问题将自动检索这里" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import PDF, TXT or Markdown files — questions the AI can't answer directly get looked up here"
           }
         }
       }
     },
-    "编辑": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit"
+    "导入中…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importing…"
           }
         }
       }
     },
-    "通义千问": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Qwen"
+    "导入失败" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import Failed"
           }
         }
       }
     },
-    "自定义": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Custom"
+    "导入文档" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import Documents"
           }
         }
       }
     },
-    "添加 Provider": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add Provider"
+    "已结束" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ended"
           }
         }
       }
     },
-    "轻点切换当前使用的 Provider，左滑编辑或删除。兼容所有 OpenAI 格式服务，API Key 仅保存在设备 Keychain 中。": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tap to switch providers; swipe left to edit or delete. Works with any OpenAI-compatible service. API keys are stored only in the device Keychain."
+    "开始会议" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start Meeting"
           }
         }
       }
     },
-    "语音识别": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Speech Recognition"
+    "当前设备不支持本地语音识别（中文/英文模型均不可用）" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On-device speech recognition isn't available on this device."
           }
         }
       }
     },
-    "识别方式": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Engine"
+    "我们开始今天的项目 Alpha 评审会，先同步一下进度" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's start today's Project Alpha review, first a quick status update"
           }
         }
       }
     },
-    "本地识别（离线）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "On-device (offline)"
+    "我们开始今天的项目 Alpha 评审会，先同步一下进度。\n上周的迭代已经全部上线了，数据看起来不错。\n接下来说一下大家关心的几个技术问题。\n我先问一下我们 API 网关的限流阈值是多少。\n然后我继续同步后端进展，用户服务重构完成了百分之八十。\n剩下的订单接口这周五之前迁移完。\n数据库上周治理了慢查询，响应时间下降了三成。\n好，那今天就先到这里。" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's start today's Project Alpha review, first a quick status update.\nLast week's iteration is fully shipped and the numbers look good.\nNext, a few technical questions everyone has been asking about.\nFirst let me ask what our API gateway rate limit is.\nThen I'll continue with backend progress: the user service refactor is eighty percent done.\nThe remaining order endpoints migrate before Friday.\nWe tuned slow queries last week and response time dropped thirty percent.\nAlright, let's wrap up here for today."
           }
         }
       }
     },
-    "Fish Audio 云端": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fish Audio (cloud)"
+    "我先问一下我们 API 网关的限流阈值是多少然后我继续同步后端进展用户服务重构完成了百分之八十剩下的订单接口这周五之前迁移完数据库上周治理了慢查询响应时间下降了三成" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First let me ask what our API gateway rate limit is then I'll continue with backend progress the user service refactor is eighty percent done the remaining order endpoints migrate before Friday and last week we tuned slow queries so response time dropped thirty percent"
           }
         }
       }
     },
-    "识别语言": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Language"
+    "手动提问" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ask"
           }
         }
       }
     },
-    "云端识别按停顿分段上传（约 3~8 秒一段），自动判别语言，术语与标点准确率更高；需要网络，音频将发送至 Fish Audio。Key 仅保存在 Keychain。": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cloud recognition uploads in pause-aligned chunks (about 3–8 s each) and detects the language automatically, with better accuracy on terminology and punctuation. Requires a network connection; audio is sent to Fish Audio. The key is stored only in the Keychain."
+    "打开提词器" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open teleprompter"
           }
         }
       }
     },
-    "本地识别完全离线、零延迟，音频不出设备。本地模型分语种，语言选错会严重影响准确率（如用中文模型识别英文会议）；纯英文会议请选 English。首次使用某语言需下载模型。": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "On-device recognition is fully offline with no latency, and audio never leaves the device. Models are per-language — picking the wrong one badly hurts accuracy (e.g. a Chinese model on an English meeting), so choose English for English meetings. The first use of a language downloads its model."
+    "提前检测（不等定稿）" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Early detection (before finalize)"
           }
         }
       }
     },
-    "问题检测": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Question Detection"
+    "文件中没有可用的文本内容" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file has no usable text"
           }
         }
       }
     },
-    "LLM 漏检兜底扫描": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "LLM sweep for missed questions"
+    "新建发言稿" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "New Script"
           }
         }
       }
     },
-    "提前检测（不等定稿）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Early detection (before finalize)"
+    "无法确定语音识别音频格式" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't determine the audio format for speech recognition"
           }
         }
       }
     },
-    "兜底扫描：每累计约 100 字或 20 秒，用一次小额 LLM 调用扫描规则漏掉的问题，结束会议前做收尾扫描（会议中可快速开关）。提前检测：连续说话时语音识别可能几十秒不定稿，开启后在灰色未定稿文本上即时检测问题，命中并确认说完后立刻出卡。": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sweep: every ~100 characters or 20 seconds, one small LLM call catches questions the rules missed, plus a final sweep when the meeting ends (toggleable mid-meeting). Early detection: during continuous speech, recognition may not finalize for tens of seconds — this spots questions in the grey draft text and creates the card as soon as the question is complete."
+    "无法读取文件内容（格式或编码不支持）" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't read the file (unsupported format or encoding)"
           }
         }
       }
     },
-    "默认配置": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Default"
+    "暂未检测到问题" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Questions Yet"
           }
         }
       }
     },
-    "名称（如 DeepSeek）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Name (e.g. DeepSeek)"
+    "未命名发言稿" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untitled Script"
           }
         }
       }
     },
-    "API 地址": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "API endpoint"
+    "未找到资料" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Found"
           }
         }
       }
     },
-    "模型名称": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Model name"
+    "未知文档" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown document"
           }
         }
       }
     },
-    "需为 OpenAI 兼容格式服务（chat/completions 接口）。": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Must be an OpenAI-compatible service (chat/completions endpoint)."
+    "未获得麦克风权限，请在系统设置中允许会议助手使用麦克风" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Microphone access denied. Allow it for Meeting Assistant in System Settings."
           }
         }
       }
     },
-    "测试中…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Testing…"
+    "未配置" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not Set Up"
           }
         }
       }
     },
-    "测试连接": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Test Connection"
+    "未配置 Fish Audio API Key，请到设置页「语音识别」填写" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Fish Audio API key — add one under Settings → Speech Recognition"
           }
         }
       }
     },
-    "连接成功：%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Connected: %@"
+    "未配置 LLM API，问题已记录。请到设置页配置后使用问答。" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No LLM configured. Question saved — set up a provider in Settings to get answers."
           }
         }
       }
     },
-    "编辑 Provider": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit Provider"
+    "未配置 LLM Provider，请先到设置页配置" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No LLM provider configured — set one up in Settings first"
           }
         }
       }
     },
-    "取消": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
+    "本地知识库" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Knowledge Base"
           }
         }
       }
     },
-    "保存": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save"
+    "本地识别（离线）" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On-device (offline)"
           }
         }
       }
     },
-    "知识库还是空的": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Knowledge Base Is Empty"
+    "本地识别完全离线、零延迟，音频不出设备。本地模型分语种，语言选错会严重影响准确率（如用中文模型识别英文会议）；纯英文会议请选 English。首次使用某语言需下载模型。" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On-device recognition is fully offline with no latency, and audio never leaves the device. Models are per-language — picking the wrong one badly hurts accuracy (e.g. a Chinese model on an English meeting), so choose English for English meetings. The first use of a language downloads its model."
           }
         }
       }
     },
-    "导入 PDF、TXT 或 Markdown 资料，会议中 AI 无法直答的问题将自动检索这里": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Import PDF, TXT or Markdown files — questions the AI can't answer directly get looked up here"
+    "本场会议未记录问题" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No questions recorded"
           }
         }
       }
     },
-    "导入文档": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Import Documents"
+    "来源：%@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Source: %@"
           }
         }
       }
     },
-    "本地知识库": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Knowledge Base"
+    "标题" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Title"
           }
         }
       }
     },
-    "语义向量检索已启用": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Semantic vector search enabled"
+    "检测到的问题" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detected Questions"
           }
         }
       }
     },
-    "向量模型不可用，已降级为文本匹配检索": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vector model unavailable — using text matching"
+    "模型名称" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model name"
           }
         }
       }
     },
-    "导入失败": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Import Failed"
+    "正在准备语音识别…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preparing speech recognition…"
           }
         }
       }
     },
-    "好": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "OK"
+    "正在结束…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrapping up…"
           }
         }
       }
     },
-    "导入中…": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Importing…"
+    "正在聆听…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Listening…"
           }
         }
       }
     },
-    "%lld 个片段": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld chunks"
+    "正文" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Body"
           }
         }
       }
     },
-    "还没有发言稿": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Scripts Yet"
+    "测试中…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Testing…"
           }
         }
       }
     },
-    "粘贴或导入准备好的稿件，会议中可作为提词器盖在转写上方，并随你的语音自动滚动": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paste or import a prepared script — it overlays the transcript during a meeting and scrolls with your voice"
+    "测试连接" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Test Connection"
           }
         }
       }
     },
-    "粘贴新建": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paste New"
+    "涉及私有信息，正在检索知识库…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private info — searching knowledge base…"
           }
         }
       }
     },
-    "从文件导入": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Import from File"
+    "添加 Provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add Provider"
           }
         }
       }
     },
-    "选择发言稿": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose a Script"
+    "演示模式" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Demo Mode"
           }
         }
       }
     },
-    "标题": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Title"
+    "点击下方按钮开始第一场会议" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the button below to start your first meeting"
           }
         }
       }
     },
-    "如：季度汇报开场": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "e.g. Quarterly review opening"
+    "生成中…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generating…"
           }
         }
       }
     },
-    "正文": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Body"
+    "生成会议纪要" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generate Summary"
           }
         }
       }
     },
-    "新建发言稿": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New Script"
+    "知识库" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Knowledge Base"
           }
         }
       }
     },
-    "编辑发言稿": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit Script"
+    "知识库中未找到相关资料，可在首页「知识库」导入文档" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing relevant found — import documents from the Knowledge Base"
           }
         }
       }
     },
-    "未命名发言稿": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Untitled Script"
+    "知识库还是空的" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Knowledge Base Is Empty"
           }
         }
       }
     },
-    "跟随": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Follow"
+    "示例-评审会发言稿" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sample-Review-Script"
           }
         }
       }
     },
-    "进行中": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In progress"
+    "示例-项目资料.md" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sample-Project-Notes.md"
           }
         }
       }
     },
-    "未获得麦克风权限，请在系统设置中允许会议助手使用麦克风": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Microphone access denied. Allow it for Meeting Assistant in System Settings."
+    "粘贴或导入准备好的稿件，会议中可作为提词器盖在转写上方，并随你的语音自动滚动" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste or import a prepared script — it overlays the transcript during a meeting and scrolls with your voice"
           }
         }
       }
     },
-    "当前设备不支持本地语音识别（中文/英文模型均不可用）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "On-device speech recognition isn't available on this device."
+    "粘贴新建" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste New"
           }
         }
       }
     },
-    "语音识别模型不可用：%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Speech model unavailable: %@"
+    "纪要" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Summary"
           }
         }
       }
     },
-    "无法确定语音识别音频格式": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't determine the audio format for speech recognition"
+    "结束会议" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End Meeting"
           }
         }
       }
     },
-    "未配置 Fish Audio API Key，请到设置页「语音识别」填写": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Fish Audio API key — add one under Settings → Speech Recognition"
+    "编辑" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
           }
         }
       }
     },
-    "自动（跟随系统）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Automatic (system)"
+    "编辑 Provider" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Provider"
           }
         }
       }
     },
-    "中文": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chinese"
+    "编辑发言稿" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit Script"
           }
         }
       }
     },
-    "API 地址无效，请检查设置": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Invalid API endpoint — check Settings"
+    "自动（跟随系统）" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatic (system)"
           }
         }
       }
     },
-    "LLM 服务返回了无法解析的内容": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The LLM service returned an unreadable response"
+    "自定义" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom"
           }
         }
       }
     },
-    "请求失败（HTTP %lld）：%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Request failed (HTTP %lld): %@"
+    "设置" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         }
       }
     },
-    "无法读取文件内容（格式或编码不支持）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn't read the file (unsupported format or encoding)"
+    "识别到提问后会自动出现在这里" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questions appear here as they're asked"
           }
         }
       }
     },
-    "文件中没有可用的文本内容": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The file has no usable text"
+    "识别方式" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engine"
           }
         }
       }
     },
-    "Fish Audio 返回了无法解析的内容": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fish Audio returned an unreadable response"
+    "识别语言" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
           }
         }
       }
     },
-    "云端识别失败（HTTP %lld）：%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cloud recognition failed (HTTP %lld): %@"
+    "语义向量检索已启用" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semantic vector search enabled"
           }
         }
       }
     },
-    "未知文档": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unknown document"
+    "语音识别" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speech Recognition"
           }
         }
       }
     },
-    "转写中断：%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Transcription interrupted: %@"
+    "语音识别模型不可用：%@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speech model unavailable: %@"
           }
         }
       }
     },
-    "会议 %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Meeting %@"
+    "请求失败（HTTP %lld）：%@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Request failed (HTTP %lld): %@"
           }
         }
       }
     },
-    "〔云端识别中…〕": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "[Transcribing in cloud…]"
+    "跟随" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Follow"
           }
         }
       }
     },
-    "- 时间：%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "- Time: %@"
+    "转写中断：%@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transcription interrupted: %@"
           }
         }
       }
     },
-    "- 时长：%@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "- Duration: %@"
+    "转写全文" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Full Transcript"
           }
         }
       }
     },
-    "- 问题数：%lld": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "- Questions: %lld"
+    "轻点切换当前使用的 Provider，左滑编辑或删除。兼容所有 OpenAI 格式服务，API Key 仅保存在设备 Keychain 中。" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap to switch providers; swipe left to edit or delete. Works with any OpenAI-compatible service. API keys are stored only in the device Keychain."
           }
         }
       }
     },
-    "问答记录": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Q&A Records"
+    "还没有会议纪要" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Summary Yet"
           }
         }
       }
     },
-    "转写全文": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Full Transcript"
+    "还没有会议记录" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Meetings Yet"
           }
         }
       }
     },
-    "我们开始今天的项目 Alpha 评审会，先同步一下进度": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Let's start today's Project Alpha review, first a quick status update"
+    "还没有发言稿" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Scripts Yet"
           }
         }
       }
     },
-    "上周的迭代已经全部上线了，数据看起来不错": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Last week's iteration is fully shipped and the numbers look good"
+    "进行中" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In progress"
           }
         }
       }
     },
-    "什么是向量数据库？它和普通数据库有什么区别": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What is a vector database? How is it different from a regular database"
+    "连接成功：%@" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connected: %@"
           }
         }
       }
     },
-    "嗯那个，我们这个项目 Q3 的内部预算大概是多少来着": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Um so, what was our internal Q3 budget for this project again"
+    "选择一场会议" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a Meeting"
           }
         }
       }
     },
-    "HTTP 和 WebSocket 的区别是什么": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What's the difference between HTTP and WebSocket"
+    "选择发言稿" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a Script"
           }
         }
       }
     },
-    "对了，这个方案的压测数据你那边测过的没": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "By the way, did you ever run load tests on this design"
+    "通义千问" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qwen"
           }
         }
       }
     },
-    "我先问一下我们 API 网关的限流阈值是多少然后我继续同步后端进展用户服务重构完成了百分之八十剩下的订单接口这周五之前迁移完数据库上周治理了慢查询响应时间下降了三成": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "First let me ask what our API gateway rate limit is then I'll continue with backend progress the user service refactor is eighty percent done the remaining order endpoints migrate before Friday and last week we tuned slow queries so response time dropped thirty percent"
+    "重新生成" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regenerate"
           }
         }
       }
     },
-    "好，那今天就先到这里": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Alright, let's wrap up here for today"
+    "重试" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry"
           }
         }
       }
     },
-    "示例-项目资料.md": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sample-Project-Notes.md"
+    "问答（%lld）" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Q&A (%lld)"
           }
         }
       }
     },
-    "示例-评审会发言稿": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sample-Review-Script"
+    "问答记录" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Q&A Records"
           }
         }
       }
     },
-    "# 项目 Alpha Q3 预算\n项目 Alpha 的 Q3 内部预算总额为 120 万元：研发 80 万、市场 25 万、运维 15 万。预算审批人为财务部王总，超支需提前两周申请。\n\n# 项目 Beta Q3 预算\n项目 Beta 的 Q3 内部预算总额为 200 万元：研发 120 万、市场 50 万、运维 30 万。预算审批人为财务部李总。\n\n# API 网关配置\n生产环境 API 网关的限流阈值为每秒 5000 次请求（5000 QPS），突发流量上限 8000 QPS，超出后返回 429。灰度环境限流为 1000 QPS。\n\n# 压测数据（2026 年 6 月）\n核心下单接口压测结果：P99 延迟 180ms，平均延迟 45ms；单集群最大吞吐 3200 QPS；瓶颈在订单库写入，计划 Q3 分库分表解决。": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "# Project Alpha Q3 Budget\nProject Alpha's internal Q3 budget totals 1.2M CNY: 800k engineering, 250k marketing, 150k operations. Approver is Wang from Finance; overruns need two weeks' notice.\n\n# Project Beta Q3 Budget\nProject Beta's internal Q3 budget totals 2.0M CNY: 1.2M engineering, 500k marketing, 300k operations. Approver is Li from Finance.\n\n# API Gateway Configuration\nThe production API gateway rate limit is 5000 requests per second (5000 QPS), with a burst ceiling of 8000 QPS; excess traffic gets a 429. The staging limit is 1000 QPS.\n\n# Load Test Results (June 2026)\nCore checkout endpoint: P99 latency 180ms, average 45ms; peak single-cluster throughput 3200 QPS. The bottleneck is order-table writes, to be addressed by sharding in Q3."
+    "问题检测" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Question Detection"
           }
         }
       }
     },
-    "我们开始今天的项目 Alpha 评审会，先同步一下进度。\n上周的迭代已经全部上线了，数据看起来不错。\n接下来说一下大家关心的几个技术问题。\n我先问一下我们 API 网关的限流阈值是多少。\n然后我继续同步后端进展，用户服务重构完成了百分之八十。\n剩下的订单接口这周五之前迁移完。\n数据库上周治理了慢查询，响应时间下降了三成。\n好，那今天就先到这里。": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Let's start today's Project Alpha review, first a quick status update.\nLast week's iteration is fully shipped and the numbers look good.\nNext, a few technical questions everyone has been asking about.\nFirst let me ask what our API gateway rate limit is.\nThen I'll continue with backend progress: the user service refactor is eighty percent done.\nThe remaining order endpoints migrate before Friday.\nWe tuned slow queries last week and response time dropped thirty percent.\nAlright, let's wrap up here for today."
+    "需为 OpenAI 兼容格式服务（chat/completions 接口）。" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Must be an OpenAI-compatible service (chat/completions endpoint)."
           }
         }
       }
     },
-    "**问：%@**（%@）": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "**Q: %@** (%@)"
+    "默认配置" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default"
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>即答会议 支持 · AskLive Support</title>
+<style>
+  :root {
+    --bg: #FFFFFF; --ink: #1B1F2A; --muted: #6B7186;
+    --accent: #1B9E6B; --line: #E4E6EC; --card: #F5F6F9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10131A; --ink: #ECEEF4; --muted: #98A0B4;
+      --accent: #3DDC97; --line: #262B38; --card: #191D26;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "SF Pro Text", "PingFang SC", "Helvetica Neue",
+                 "Microsoft YaHei", sans-serif;
+    line-height: 1.75;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+  header { display: flex; align-items: center; gap: 16px; }
+  header svg { width: 64px; height: 64px; border-radius: 22.37%; flex: none; }
+  header h1 { font-size: 26px; margin: 0; letter-spacing: -0.01em; }
+  header p { margin: 2px 0 0; color: var(--muted); font-size: 15px; }
+  h2 { font-size: 19px; margin: 36px 0 10px; }
+  p, li, dd { font-size: 15.5px; }
+  .card { background: var(--card); border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+  dt { font-weight: 600; margin-top: 14px; }
+  dd { margin: 2px 0 0 0; color: var(--muted); }
+  a { color: var(--accent); }
+  footer { margin-top: 56px; color: var(--muted); font-size: 13.5px;
+           border-top: 1px solid var(--line); padding-top: 18px; }
+  /* 英文译文单独成行并降低对比，避免与中文挤在一段里难以分辨 */
+  .en { display: block; margin-top: 6px; color: var(--muted); opacity: 0.72;
+        font-size: 14px; line-height: 1.6; }
+  p.en { margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="0.3" y2="1">
+          <stop offset="0" stop-color="#2C3E6B"/><stop offset="1" stop-color="#131C33"/>
+        </linearGradient>
+      </defs>
+      <rect width="1024" height="1024" fill="url(#bg)"/>
+      <path d="M470 442 h300 a104 104 0 0 1 104 104 v206 a104 104 0 0 1 -104 104 h-96
+               l-92 84 a14 14 0 0 1 -23 -11 v-73 h-89 a104 104 0 0 1 -104 -104 v-206
+               a104 104 0 0 1 104 -104 z" fill="#3DDC97"/>
+      <g fill="#0F2A22" opacity="0.85">
+        <rect x="512" y="546" width="216" height="42" rx="21"/>
+        <rect x="512" y="626" width="152" height="42" rx="21"/>
+      </g>
+      <path d="M214 158 h296 a104 104 0 0 1 104 104 v202 a104 104 0 0 1 -104 104 h-92
+               l-90 82 a14 14 0 0 1 -23 -11 v-71 h-91 a104 104 0 0 1 -104 -104 v-202
+               a104 104 0 0 1 104 -104 z" fill="#FFFFFF" stroke="#131C33" stroke-width="26"/>
+      <g fill="none" stroke="#131C33" stroke-width="62" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M296 300 A 74 74 0 1 1 406 362 L 366 398 L 366 424"/>
+      </g>
+      <circle cx="366" cy="486" r="35" fill="#131C33"/>
+    </svg>
+    <div>
+      <h1>即答会议</h1>
+      <p>识别到提问，立刻给出答案 · Answers questions as you meet</p>
+    </div>
+  </header>
+
+  <h2>这是什么</h2>
+  <p>即答会议实时把会议语音转成文字，同时盯住每一个提问：能回答的立刻流式作答，回答不了的自动检索你导入的内部资料并标注来源，并把问题去掉口水话归档。会后一键生成纪要并导出。</p>
+  <p class="en">AskLive transcribes your meeting in real time while watching for every question — streaming an answer to the ones it can handle, searching your own imported documents for the ones it can't, and filing each question away with the filler words stripped out.</p>
+
+  <h2>常见问题 · FAQ</h2>
+  <div class="card">
+    <dl>
+      <dt>问题卡片显示「未配置 LLM API」怎么办？</dt>
+      <dd>问答与纪要功能需要你自己的 LLM API 密钥：设置 → LLM Provider → 添加 Provider，内置 DeepSeek、通义千问、OpenAI 预设，也可填任意 OpenAI 兼容服务的地址与模型名。填好后可点「测试连接」验证。不填密钥仍可正常使用实时转写、问题检测与提词器。<span class="en">Q&A and summaries need your own LLM API key (Settings → LLM Provider). Transcription, question detection and the teleprompter work without one.</span></dd>
+
+      <dt>英文会议识别得很差？</dt>
+      <dd>本地识别模型是<strong>分语种</strong>的，用中文模型识别英文会严重出错。纯英文会议请到 设置 → 语音识别 → 识别语言，选 English（首次使用该语言需下载模型）；或直接切换到云端识别，云端会自动判别语言。<span class="en">On-device models are per-language — pick English under Settings → Speech Recognition → Language, or switch to cloud recognition which detects the language automatically.</span></dd>
+
+      <dt>本地识别和云端识别怎么选？</dt>
+      <dd>本地识别完全离线、零延迟，音频不出设备，适合涉密场合；Fish Audio 云端识别按停顿分段上传，对专业术语和标点更准、自动判别语言，但需要网络且音频会发送至 Fish Audio。两者随时可切。<span class="en">On-device is offline and private; Fish Audio cloud is more accurate on terminology and punctuation but uploads audio.</span></dd>
+
+      <dt>会议录音会被保存吗？</dt>
+      <dd>不会。App <strong>不保存任何音频文件</strong>，只保存转写出来的文字、问答记录与纪要，全部存在你的设备本地。<span class="en">No audio is ever saved — only the text transcript, Q&A records and summary, all stored locally on your device.</span></dd>
+
+      <dt>导入的知识库资料会被上传吗？</dt>
+      <dd>资料本身始终留在设备本地，检索也在本机完成。只有当某个问题需要知识库作答时，检索命中的<strong>相关片段</strong>才会随问题一起发给你自己配置的 LLM 服务商。详见<a href="./privacy.html">隐私政策</a>。<span class="en">Documents stay on-device; only the retrieved snippets are sent with your question to the LLM provider you configured. See the <a href="./privacy.html">privacy policy</a>.</span></dd>
+
+      <dt>有问题被漏掉了怎么办？</dt>
+      <dd>App 有四层检测（提前检测、规则触发、AI 确认、兜底扫描），后两层可在 设置 → 问题检测 中开关。若仍有遗漏，可在会议中点右上角「手动提问」，把最近说的内容直接交给 AI 提取并回答。<span class="en">Four detection layers, two of them toggleable in Settings. If something still slips through, tap "Ask" during the meeting.</span></dd>
+
+      <dt>提词器怎么用？</dt>
+      <dd>先在首页「发言稿」里粘贴或导入稿件，会议中点顶部文档图标选稿即可。浮层只盖住转写区，问答卡片照常可见。它会用实时转写定位你念到哪一行并自动滚动高亮；脱稿时停在原地等你回来。<span class="en">Add a script from the home screen, then tap the document icon during a meeting. It follows your voice and highlights the current line.</span></dd>
+
+      <dt>App 需要哪些权限？</dt>
+      <dd>麦克风与语音识别，二者都是实时转写所必需。<span class="en">Microphone and Speech Recognition, both required for live transcription.</span></dd>
+    </dl>
+  </div>
+
+  <h2>联系 · Contact</h2>
+  <p>问题与建议：<a href="mailto:zhuolun66@gmail.com">zhuolun66@gmail.com</a></p>
+
+  <footer>
+    © 2026 即答会议 AskLive · <a href="./privacy.html">隐私政策 / Privacy Policy</a>
+  </footer>
+</div>
+</body>
+</html>

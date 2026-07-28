@@ -177,8 +177,16 @@ MeetingAssistant/
 └── Support/            Keychain
 
 Design/AppIcons/        App 图标设计稿（SVG 源文件 + 候选方案对比图）
+Design/app-store/       上架素材：预览图生成器 + 四套截图 + listing.md 文案
+docs/                   GitHub Pages：支持页 index.html / 隐私政策 privacy.html
 TestAudio/              测试音频（Fish Audio TTS 生成，覆盖多问题/长句/中英文）
 ```
+
+`docs/` 两个页面是 App Store Connect 必填的「技术支持网址」与「隐私政策网址」，
+仓库转 public 后到 Settings → Pages → Deploy from a branch → `main` + `/docs` 即可启用：
+
+- 支持页 `https://bruce5800.github.io/Meeting-Assistant/`
+- 隐私政策 `https://bruce5800.github.io/Meeting-Assistant/privacy.html`
 
 App 图标为「QA-Duo 问答双气泡」，含 light / dark / tinted 三套外观变体。改图标：编辑
 `Design/AppIcons/appicon-*.svg` 后重新渲染进资源目录：
