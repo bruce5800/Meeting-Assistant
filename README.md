@@ -224,11 +224,16 @@ xcrun simctl launch <UDID> bruce.MeetingAssistant -hideDemoBadge YES
 
 ```bash
 cd Design/app-store && swiftc -O make_shots.swift -o make_shots
-./make_shots raw zh zh              # iPhone 中文
+./make_shots raw zh zh              # iPhone 中文（默认 6.5″ 1284×2778）
 ./make_shots raw-en en en           # iPhone 英文
-./make_shots raw-ipad zh-ipad zh    # iPad 中文
+./make_shots raw-ipad zh-ipad zh    # iPad 中文（默认 12.9″ 2048×2732）
 ./make_shots raw-ipad-en en-ipad en # iPad 英文
+./make_shots raw zh-6.9 zh iphone69 # 指定画布：iphone65/iphone69/ipad129/ipad13
 ```
+
+App Store Connect 的截屏槽位尺寸随账号/App 状态而变，四种尺寸都已生成好
+（`zh/` `en/` = 6.5″，`zh-6.9/` `en-6.9/` = 6.9″，`zh-ipad/` `en-ipad/` = 12.9″，
+`zh-ipad13/` `en-ipad13/` = 13″），按 ASC 页面标注的尺寸选目录上传。
 
 ---
 

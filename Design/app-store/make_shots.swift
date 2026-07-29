@@ -2,12 +2,15 @@ import AppKit
 import ImageIO
 
 // App Store marketing-screenshot compositor.
-//   swiftc -O make_shots.swift -o make_shots && ./make_shots <rawDir> <outDir> <zh|en>
-// Reads the device screenshots from <rawDir>, lays each onto the canvas App Store
-// Connect asks for, in the app icon's navy palette, and writes alpha-free PNGs.
-// The canvas is picked from the source screenshot's aspect ratio:
-//   iPhone 6.9"  1320×2868  (iPhone 17 Pro Max simulator, native)
-//   iPad  13"    2064×2752  (iPad Pro 13-inch simulator, native)
+//   swiftc -O make_shots.swift -o make_shots
+//   ./make_shots <rawDir> <outDir> <zh|en> [canvas]
+//
+// canvas 省略时按源图长宽比自动选择 App Store Connect 当前要求的槽位尺寸：
+//   iphone65  1284×2778  iPhone 6.5"（ASC「6.5 英寸显示屏」槽位）← iPhone 默认
+//   iphone69  1320×2868  iPhone 6.9"
+//   ipad129   2048×2732  iPad 12.9"（ASC 老一代 iPad 槽位）      ← iPad 默认
+//   ipad13    2064×2752  iPad 13"
+// 版式参数以一套基准等比缩放到各尺寸，所以换画布不需要重新调版。
 
 struct Canvas {
     let w: CGFloat, h: CGFloat
@@ -16,20 +19,45 @@ struct Canvas {
     let subY: CGFloat, subSize: CGFloat
     let deviceTop: CGFloat, deviceW: CGFloat
 
-    static let iPhone = Canvas(w: 1320, h: 2868,
-                               titleTop: 138, titleSizeZH: 98, titleSizeEN: 84,
-                               barY: 318, barW: 128, barH: 11,
-                               subY: 372, subSize: 48,
-                               deviceTop: 596, deviceW: 980)
-    static let iPad = Canvas(w: 2064, h: 2752,
-                             titleTop: 150, titleSizeZH: 124, titleSizeEN: 108,
-                             barY: 356, barW: 160, barH: 13,
-                             subY: 424, subSize: 58,
-                             deviceTop: 625, deviceW: 1490)
+    /// 以本画布为基准，等比缩放出另一尺寸的版式
+    func scaled(to width: CGFloat, _ height: CGFloat) -> Canvas {
+        let k = min(width / w, height / h)
+        func s(_ v: CGFloat) -> CGFloat { (v * k).rounded() }
+        return Canvas(w: width, h: height,
+                      titleTop: s(titleTop), titleSizeZH: s(titleSizeZH), titleSizeEN: s(titleSizeEN),
+                      barY: s(barY), barW: s(barW), barH: s(barH),
+                      subY: s(subY), subSize: s(subSize),
+                      deviceTop: s(deviceTop), deviceW: s(deviceW))
+    }
 
-    /// 竖长比 > 1.6 认为是 iPhone，接近 4:3 的是 iPad
+    // 基准版式（在这两个尺寸上手工调好，其余由 scaled(to:) 推导）
+    static let iPhone69 = Canvas(w: 1320, h: 2868,
+                                 titleTop: 138, titleSizeZH: 98, titleSizeEN: 84,
+                                 barY: 318, barW: 128, barH: 11,
+                                 subY: 372, subSize: 48,
+                                 deviceTop: 596, deviceW: 980)
+    static let iPad13 = Canvas(w: 2064, h: 2752,
+                               titleTop: 150, titleSizeZH: 124, titleSizeEN: 108,
+                               barY: 356, barW: 160, barH: 13,
+                               subY: 424, subSize: 58,
+                               deviceTop: 625, deviceW: 1490)
+
+    static let iPhone65 = iPhone69.scaled(to: 1284, 2778)
+    static let iPad129 = iPad13.scaled(to: 2048, 2732)
+
+    static func named(_ name: String) -> Canvas? {
+        switch name.lowercased() {
+        case "iphone65": .iPhone65
+        case "iphone69": .iPhone69
+        case "ipad129": .iPad129
+        case "ipad13": .iPad13
+        default: nil
+        }
+    }
+
+    /// 竖长比 > 1.6 认为是 iPhone，接近 4:3 的是 iPad；默认取 ASC 当前的槽位尺寸
     static func matching(_ image: CGImage) -> Canvas {
-        CGFloat(image.height) / CGFloat(image.width) > 1.6 ? .iPhone : .iPad
+        CGFloat(image.height) / CGFloat(image.width) > 1.6 ? .iPhone65 : .iPad129
     }
 }
 
@@ -138,9 +166,9 @@ func drawPhone(_ ctx: CGContext, image: CGImage, center: CGPoint, width: CGFloat
 
 // MARK: - Canvas
 
-func render(_ shot: Shot, lang: String, imgDir: String, outPath: String) {
+func render(_ shot: Shot, lang: String, canvas: Canvas?, imgDir: String, outPath: String) {
     let img = loadImage("\(imgDir)/\(shot.file)")
-    let c = Canvas.matching(img)
+    let c = canvas ?? Canvas.matching(img)
     let titleSize = lang == "zh" ? c.titleSizeZH : c.titleSizeEN
 
     let space = CGColorSpace(name: CGColorSpace.sRGB)!
@@ -192,14 +220,27 @@ func render(_ shot: Shot, lang: String, imgDir: String, outPath: String) {
 // MARK: - Main
 
 let args = CommandLine.arguments
-guard args.count == 4, args[3] == "zh" || args[3] == "en" else {
-    fputs("usage: make_shots <rawDir> <outDir> <zh|en>\n", stderr)
+guard args.count == 4 || args.count == 5, args[3] == "zh" || args[3] == "en" else {
+    fputs("""
+    usage: make_shots <rawDir> <outDir> <zh|en> [canvas]
+      canvas: iphone65 (1284×2778, 默认) | iphone69 (1320×2868)
+              ipad129  (2048×2732, 默认) | ipad13   (2064×2752)
+
+    """, stderr)
     exit(2)
 }
 let imgDir = args[1], outDir = args[2], lang = args[3]
+var canvas: Canvas?
+if args.count == 5 {
+    guard let named = Canvas.named(args[4]) else {
+        fputs("unknown canvas: \(args[4])\n", stderr)
+        exit(2)
+    }
+    canvas = named
+}
 let shots = lang == "zh" ? zhShots : enShots
 try? FileManager.default.createDirectory(atPath: outDir, withIntermediateDirectories: true)
 for (i, shot) in shots.enumerated() {
-    render(shot, lang: lang, imgDir: imgDir,
+    render(shot, lang: lang, canvas: canvas, imgDir: imgDir,
            outPath: "\(outDir)/\(String(format: "%02d", i + 1)).png")
 }
