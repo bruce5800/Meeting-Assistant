@@ -12,6 +12,7 @@ import SwiftData
 import UIKit
 
 struct LiveMeetingView: View {
+    let domain: MeetingDomainContext
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -47,7 +48,7 @@ struct LiveMeetingView: View {
             }
         }
         .task {
-            await viewModel.start(context: modelContext)
+            await viewModel.start(context: modelContext, domain: domain)
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
@@ -107,6 +108,13 @@ struct LiveMeetingView: View {
             }
 
             Spacer()
+
+            if domain.isEnabled {
+                Text(domain.domain == .none ? String(localized: "术语提示") : domain.name)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
 
             Button {
                 if activeScript == nil {

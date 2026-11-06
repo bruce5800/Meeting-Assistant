@@ -15,6 +15,9 @@ struct HomeView: View {
     @Query(sort: \MeetingSession.startedAt, order: .reverse) private var sessions: [MeetingSession]
     @State private var selectedSession: MeetingSession?
     @State private var showLiveMeeting = false
+    @State private var showMeetingSetup = false
+    @State private var startAfterSetup = false
+    @State private var meetingDomain = MeetingDomainContext()
     @State private var showSettings = false
     @State private var showKnowledgeBase = false
     @State private var showScriptLibrary = false
@@ -52,7 +55,7 @@ struct HomeView: View {
                 }
                 .safeAreaInset(edge: .bottom) {
                     Button {
-                        showLiveMeeting = true
+                        showMeetingSetup = true
                     } label: {
                         Label("开始会议", systemImage: "mic.fill")
                             .font(.headline)
@@ -85,8 +88,19 @@ struct HomeView: View {
         .sheet(isPresented: $showScriptLibrary) {
             ScriptLibraryView()
         }
+        .sheet(isPresented: $showMeetingSetup, onDismiss: {
+            if startAfterSetup {
+                startAfterSetup = false
+                showLiveMeeting = true
+            }
+        }) {
+            MeetingSetupView { selected in
+                meetingDomain = selected
+                startAfterSetup = true
+            }
+        }
         .fullScreenCover(isPresented: $showLiveMeeting) {
-            LiveMeetingView()
+            LiveMeetingView(domain: meetingDomain)
         }
     }
 

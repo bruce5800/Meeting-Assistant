@@ -35,8 +35,11 @@ enum QAPrompts {
        示例：候选文本「嗯那个，我们项目 Q3 的内部预算是多少来着」→ 输出：<q>我们项目 Q3 的内部预算是多少？</q><kb/>
     """
 
-    static func userMessage(context: String, candidate: String) -> String {
+    static func userMessage(context: String, candidate: String,
+                            domain: MeetingDomainContext = .init()) -> String {
         """
+        \(domain.promptInstruction)
+
         【会议近期转写（仅供理解上下文）】
         \(context.isEmpty ? "（无）" : context)
 
@@ -89,11 +92,14 @@ enum KBPrompts {
     - 直接输出答案文本，不要任何标签或前缀。
     """
 
-    static func userMessage(question: String, hits: [KnowledgeRetriever.Hit], context: String) -> String {
+    static func userMessage(question: String, hits: [KnowledgeRetriever.Hit], context: String,
+                            domain: MeetingDomainContext = .init()) -> String {
         let references = hits.enumerated()
             .map { "【片段 \($0.offset + 1)｜来源：\($0.element.docName)】\n\($0.element.text)" }
             .joined(separator: "\n\n")
         return """
+        \(domain.promptInstruction)
+
         【会议近期转写（辅助理解问题指代）】
         \(context.isEmpty ? "（无）" : context)
 
@@ -113,25 +119,29 @@ enum QAService {
     static func kbAnswerStream(question: String,
                                hits: [KnowledgeRetriever.Hit],
                                context: String,
+                               domain: MeetingDomainContext = .init(),
                                config: LLMConfiguration) -> AsyncThrowingStream<String, Error> {
         LLMClient.streamChat(
             messages: [
                 LLMClient.Message(role: "system", content: KBPrompts.system),
                 LLMClient.Message(role: "user",
-                                  content: KBPrompts.userMessage(question: question, hits: hits, context: context)),
+                                  content: KBPrompts.userMessage(question: question, hits: hits,
+                                                                 context: context, domain: domain)),
             ],
             config: config)
     }
 
     static func run(candidate: String,
                     context: String,
+                    domain: MeetingDomainContext = .init(),
                     config: LLMConfiguration) -> AsyncThrowingStream<QAEvent, Error> {
         AsyncThrowingStream { continuation in
             let task = Task {
                 let parser = AnswerStreamParser()
                 let messages = [
                     LLMClient.Message(role: "system", content: QAPrompts.system),
-                    LLMClient.Message(role: "user", content: QAPrompts.userMessage(context: context, candidate: candidate)),
+                    LLMClient.Message(role: "user", content: QAPrompts.userMessage(
+                        context: context, candidate: candidate, domain: domain)),
                 ]
                 do {
                     for try await delta in LLMClient.streamChat(messages: messages, config: config) {

@@ -10,6 +10,40 @@ import Testing
 @testable import MeetingAssistant
 
 @MainActor
+struct MeetingDomainTests {
+    @Test func noDomainKeepsExistingPromptBehavior() {
+        let domain = MeetingDomainContext()
+        #expect(!domain.isEnabled)
+        #expect(domain.promptInstruction.isEmpty)
+        #expect(!QAPrompts.userMessage(context: "", candidate: "预算是多少？", domain: domain)
+            .contains("【领域提示】"))
+    }
+
+    @Test func domainAndTermsAreBoundedAndIncluded() {
+        let domain = MeetingDomainContext(domain: .software,
+                                          terms: "gRPC，Kubernetes; 项目 Alpha")
+        #expect(domain.termList == ["gRPC", "Kubernetes", "项目 Alpha"])
+        #expect(domain.promptInstruction.contains("软件研发"))
+        #expect(QAPrompts.userMessage(context: "", candidate: "什么接口？", domain: domain)
+            .contains("Kubernetes"))
+    }
+
+    @Test func meetingSnapshotsDomainAndOriginalTranscript() {
+        let domain = MeetingDomainContext(domain: .custom, customName: "芯片设计", terms: "RISC-V")
+        let session = MeetingSession(title: "测试", domainContext: domain)
+        #expect(session.domainContext.name == "芯片设计")
+        #expect(session.domainContext.termList == ["RISC-V"])
+        #expect(session.rawTranscript.isEmpty)
+    }
+
+    @Test func correctionRejectsBrokenOutput() {
+        #expect(TranscriptCorrectionService.validated("", original: "原始转写文本") == "原始转写文本")
+        #expect(TranscriptCorrectionService.validated("好", original: "原始转写文本") == "原始转写文本")
+        #expect(TranscriptCorrectionService.validated("gRPC", original: "GRPC") == "gRPC")
+    }
+}
+
+@MainActor
 struct QuestionDetectorTests {
     @Test func detectsChineseQuestions() {
         #expect(QuestionDetector.isQuestion("这个方案的预算是多少"))

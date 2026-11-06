@@ -1,6 +1,18 @@
 {
   "sourceLanguage" : "zh-Hans",
   "strings" : {
+    "不指定" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "None" } } } },
+    "软件研发" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Software development" } } } },
+    "金融" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Finance" } } } },
+    "医疗" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Healthcare" } } } },
+    "法律" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Legal" } } } },
+    "会议领域" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Meeting domain" } } } },
+    "领域名称" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Domain name" } } } },
+    "关键术语（可选，用逗号分隔）" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Key terms (optional, comma-separated)" } } } },
+    "开始" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Start" } } } },
+    "查看识别原文" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Show original transcript" } } } },
+    "术语提示" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Term hints" } } } },
+    "领域和术语帮助校正同音词与歧义词；不确定时保留原话。启用后，转写片段会发送到已配置的 LLM 进行校对；不指定领域且不填写术语时不会增加调用。" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Domain and terms help resolve homophones and ambiguities; uncertain wording stays unchanged. When enabled, transcript segments are sent to your configured LLM for correction. With no domain or terms, no extra calls are made." } } } },
     "- 时长：%@" : {
       "extractionState" : "manual",
       "localizations" : {

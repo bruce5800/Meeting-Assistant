@@ -26,6 +26,8 @@ final class MeetingAssistantUITests: XCTestCase {
         // 开始会议 → 实时页出现（模拟器上本地识别模型可能不可用，应显示失败态而非崩溃）
         XCTAssertTrue(app.buttons["startMeetingButton"].waitForExistence(timeout: 5))
         app.buttons["startMeetingButton"].tap()
+        XCTAssertTrue(app.buttons["confirmStartMeetingButton"].waitForExistence(timeout: 5))
+        app.buttons["confirmStartMeetingButton"].tap()
 
         // 处理可能弹出的麦克风权限
         let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")

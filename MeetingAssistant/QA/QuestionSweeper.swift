@@ -25,8 +25,11 @@ enum QuestionSweeper {
 
     static func findMissedQuestions(transcript: String,
                                     captured: [String],
+                                    domain: MeetingDomainContext = .init(),
                                     config: LLMConfiguration) async throws -> [String] {
         let userMessage = """
+        \(domain.promptInstruction)
+
         【已捕获的问题】
         \(captured.isEmpty ? "（无）" : captured.map { "- " + $0 }.joined(separator: "\n"))
 

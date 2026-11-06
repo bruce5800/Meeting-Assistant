@@ -15,19 +15,33 @@ final class MeetingSession {
     var startedAt: Date
     var endedAt: Date?
     var transcript: String
+    /// ASR 原文；transcript 可在后台做领域校正。
+    var rawTranscript: String = ""
+    var domainRaw: String = MeetingDomain.none.rawValue
+    var customDomainName: String = ""
+    var domainTerms: String = ""
     /// LLM 生成的会议纪要（Markdown，空表示未生成）
     var summary: String = ""
     @Relationship(deleteRule: .cascade, inverse: \QuestionRecord.session)
     var questions: [QuestionRecord]
 
-    init(title: String, startedAt: Date = .now) {
+    init(title: String, startedAt: Date = .now, domainContext: MeetingDomainContext = .init()) {
         self.id = UUID()
         self.title = title
         self.startedAt = startedAt
         self.endedAt = nil
         self.transcript = ""
+        self.rawTranscript = ""
+        self.domainRaw = domainContext.domain.rawValue
+        self.customDomainName = domainContext.customName
+        self.domainTerms = domainContext.terms
         self.summary = ""
         self.questions = []
+    }
+
+    var domainContext: MeetingDomainContext {
+        MeetingDomainContext(domain: MeetingDomain(rawValue: domainRaw) ?? .none,
+                             customName: customDomainName, terms: domainTerms)
     }
 
     var durationText: String {

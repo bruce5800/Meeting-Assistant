@@ -31,8 +31,9 @@ enum SummaryPrompts {
 
     static func userMessage(title: String,
                             transcript: String,
-                            records: [(question: String, answer: String, source: String)]) -> String {
-        var body = "【会议标题】\n\(title)\n\n【会议转写】\n\(cappedTranscript(transcript))"
+                            records: [(question: String, answer: String, source: String)],
+                            domain: MeetingDomainContext = .init()) -> String {
+        var body = "\(domain.promptInstruction)\n\n【会议标题】\n\(title)\n\n【会议转写】\n\(cappedTranscript(transcript))"
         if !records.isEmpty {
             let qaLines = records.map { record in
                 let answer = record.answer.isEmpty ? "（未获得答案）" : record.answer
@@ -73,7 +74,8 @@ enum SummaryService {
                 LLMClient.Message(role: "user",
                                   content: SummaryPrompts.userMessage(title: session.title,
                                                                      transcript: session.transcript,
-                                                                     records: records)),
+                                                                     records: records,
+                                                                     domain: session.domainContext)),
             ],
             config: config, temperature: 0.3, maxTokens: 900)
     }

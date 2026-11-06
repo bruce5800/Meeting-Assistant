@@ -17,6 +17,7 @@ struct MeetingDetailView: View {
     @State private var isGeneratingSummary = false
     @State private var summaryError: String?
     @State private var exportURL: URL?
+    @State private var showRawTranscript = false
 
     private var sortedQuestions: [QuestionRecord] {
         session.questions.sorted { $0.createdAt < $1.createdAt }
@@ -149,12 +150,20 @@ struct MeetingDetailView: View {
 
     private var transcriptTab: some View {
         ScrollView {
-            Text(session.transcript.isEmpty ? "（无转写内容）" : session.transcript)
-                .font(.body)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-                .textSelection(.enabled)
-                .readableWidth()
+            VStack(alignment: .leading, spacing: 10) {
+                if !session.rawTranscript.isEmpty && session.rawTranscript != session.transcript {
+                    Toggle("查看识别原文", isOn: $showRawTranscript)
+                        .font(.subheadline)
+                }
+                Text((showRawTranscript ? session.rawTranscript : session.transcript).isEmpty
+                     ? "（无转写内容）"
+                     : (showRawTranscript ? session.rawTranscript : session.transcript))
+                    .font(.body)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .textSelection(.enabled)
+            }
+            .padding()
+            .readableWidth()
         }
     }
 

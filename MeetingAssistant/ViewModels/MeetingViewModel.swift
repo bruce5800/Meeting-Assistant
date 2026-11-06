@@ -11,7 +11,8 @@ import SwiftData
 
 struct TranscriptLine: Identifiable {
     let id = UUID()
-    let text: String
+    var text: String
+    let rawText: String
     let date: Date
 }
 
@@ -64,9 +65,11 @@ final class MeetingViewModel {
     private var deduper = QuestionDeduper()
     private var modelContext: ModelContext?
     private var eventLoopTask: Task<Void, Never>?
+    private var correctionTask: Task<Void, Never>?
+    private var meetingDomain = MeetingDomainContext()
 
     // 漏检兜底扫描状态
-    private var sweptOffset = 0
+    private var sweptLineCount = 0
     private var sweepInProgress = false
     private var lastSweepAt = Date.now
     private var sweepLoopTask: Task<Void, Never>?
@@ -94,12 +97,13 @@ final class MeetingViewModel {
 
     // MARK: - 生命周期
 
-    func start(context: ModelContext) async {
+    func start(context: ModelContext, domain: MeetingDomainContext = .init()) async {
         guard phase == .idle else { return }
         phase = .preparing
         modelContext = context
+        meetingDomain = domain
 
-        let session = MeetingSession(title: Self.defaultTitle())
+        let session = MeetingSession(title: Self.defaultTitle(), domainContext: domain)
         context.insert(session)
         self.session = session
 
@@ -166,7 +170,9 @@ final class MeetingViewModel {
         guard phase != .idle, phase != .stopping, phase != .ended else { return }
         phase = .stopping
         await provider?.stop()
-        eventLoopTask?.cancel()
+        // 云端 stop 会冲刷最后一块；先等事件消费完，再等串行校对完成。
+        await eventLoopTask?.value
+        await correctionTask?.value
         sweepLoopTask?.cancel()
         // 收尾扫描：确保结束前的尾段问题也被记录
         await performSweep()
@@ -190,6 +196,7 @@ final class MeetingViewModel {
         } else {
             session?.endedAt = .now
             session?.transcript = lines.map(\.text).joined(separator: "\n")
+            session?.rawTranscript = lines.map(\.rawText).joined(separator: "\n")
         }
         try? modelContext?.save()
         phase = .ended
@@ -240,8 +247,11 @@ final class MeetingViewModel {
         guard !trimmed.isEmpty else { return }
 
         let previous = lines.last?.text
-        lines.append(TranscriptLine(text: trimmed, date: .now))
+        let line = TranscriptLine(text: trimmed, rawText: trimmed, date: .now)
+        lines.append(line)
         session?.transcript = lines.map(\.text).joined(separator: "\n")
+        session?.rawTranscript = lines.map(\.rawText).joined(separator: "\n")
+        scheduleCorrection(for: line.id, raw: trimmed)
 
         // 该段已由提前检测出卡：跳过定稿检测（段内其余问题由兜底扫描负责）
         guard !segmentHadEarlyFire else { return }
@@ -254,14 +264,48 @@ final class MeetingViewModel {
         Task { await runQA(for: card) }
     }
 
+    /// 校对不阻塞字幕和问题检测；任务串行，保证前文与输出顺序稳定。
+    private func scheduleCorrection(for id: UUID, raw: String) {
+        let domain = meetingDomain
+        let config = LLMSettings.current()
+        guard domain.isEnabled, config.isConfigured else { return }
+        let precedingTask = correctionTask
+        correctionTask = Task { [weak self] in
+            await precedingTask?.value
+            guard let self, let index = self.lines.firstIndex(where: { $0.id == id }) else { return }
+            let previous = self.lines.prefix(index).suffix(3).map(\.text).joined(separator: "\n")
+            let corrected: String
+            do {
+                corrected = try await TranscriptCorrectionService.correct(
+                    raw: raw, previous: previous, domain: domain, config: config)
+            } catch {
+                return // 网络或模型失败时保留原文，不中断会议。
+            }
+            guard corrected != raw,
+                  let currentIndex = self.lines.firstIndex(where: { $0.id == id }) else { return }
+            self.lines[currentIndex].text = corrected
+            self.session?.transcript = self.lines.map(\.text).joined(separator: "\n")
+            try? self.modelContext?.save()
+
+            // 原始文本未命中而校对后出现问句时补检；去重仍由统一管线处理。
+            if !QuestionDetector.isQuestion(raw),
+               let candidate = QuestionDetector.detectCandidate(
+                   current: corrected, previous: currentIndex > 0 ? self.lines[currentIndex - 1].text : nil),
+               self.deduper.register(candidate) {
+                let card = QuestionCardModel(rawText: candidate)
+                self.cards.insert(card, at: 0)
+                Task { await self.runQA(for: card) }
+            }
+        }
+    }
+
     // MARK: - 漏检兜底扫描
 
     /// 阈值触发：未扫描内容 ≥100 字，或距上次扫描 ≥20 秒且有新内容。
     private func maybeSweep() {
         guard DetectionSettings.sweepEnabled else { return }
         guard phase == .recording, !sweepInProgress else { return }
-        let joined = lines.map(\.text).joined(separator: "\n")
-        let unswept = joined.count - sweptOffset
+        let unswept = lines.dropFirst(sweptLineCount).map(\.text).joined(separator: "\n").count
         guard unswept > 0 else { return }
         guard unswept >= 100 || Date.now.timeIntervalSince(lastSweepAt) >= 20 else { return }
         Task { await performSweep() }
@@ -270,23 +314,23 @@ final class MeetingViewModel {
     private func performSweep() async {
         guard DetectionSettings.sweepEnabled else { return }
         guard !sweepInProgress else { return }
-        let joined = lines.map(\.text).joined(separator: "\n")
-        guard joined.count > sweptOffset else { return }
+        guard lines.count > sweptLineCount else { return }
         let config = LLMSettings.current()
         guard config.isConfigured else { return }
 
         sweepInProgress = true
         defer { sweepInProgress = false }
 
-        // 带 60 字重叠，覆盖跨段落的问题
-        let chunkStart = max(0, sweptOffset - 60)
-        let chunk = String(joined.suffix(joined.count - chunkStart))
+        // 按片段而非字符记录进度：后台校对可能改变字数。
+        let chunkStart = max(0, sweptLineCount - 2)
+        let chunk = lines.dropFirst(chunkStart).map(\.text).joined(separator: "\n")
+        let scannedLineCount = lines.count
         let captured = cards.map(\.displayQuestion)
         do {
             let missed = try await QuestionSweeper.findMissedQuestions(
-                transcript: chunk, captured: captured, config: config)
+                transcript: chunk, captured: captured, domain: meetingDomain, config: config)
             lastSweepAt = .now
-            sweptOffset = joined.count
+            sweptLineCount = scannedLineCount
             for question in missed where deduper.register(question) {
                 let card = QuestionCardModel(rawText: question)
                 cards.insert(card, at: 0)
@@ -328,6 +372,7 @@ final class MeetingViewModel {
         do {
             for try await event in QAService.run(candidate: card.rawText,
                                                  context: recentContext(),
+                                                 domain: meetingDomain,
                                                  config: config) {
                 switch event {
                 case .questionDelta(let s):
@@ -405,6 +450,7 @@ final class MeetingViewModel {
             for try await delta in QAService.kbAnswerStream(question: card.displayQuestion,
                                                             hits: hits,
                                                             context: recentContext(),
+                                                            domain: meetingDomain,
                                                             config: config) {
                 card.answer += delta
             }
